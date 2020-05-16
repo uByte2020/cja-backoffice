@@ -1,5 +1,5 @@
 {
-  "name": "vue-material-dashboard",
+  "name": "cja-backoffice",
   "version": "1.4.0",
   "private": true,
   "scripts": {
@@ -34,5 +34,20 @@
     "sass": "1.26.2",
     "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.11"
-  }
+  },
+  "description": "",
+  "main": ".eslintrc.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uByte2020/cja-backoffice.git"
+  },
+  "author": "uByte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uByte2020/cja-backoffice/issues"
+  },
+  "homepage": "https://github.com/uByte2020/cja-backoffice#readme"
 }
