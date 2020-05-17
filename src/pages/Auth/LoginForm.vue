@@ -21,14 +21,17 @@
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-center">
-            <md-button class="md-raised md-success">Entrar</md-button>
+            <md-button class="md-raised md-success" @click="login">Entrar</md-button>
           </div>
         </div>
       </md-card-content>
+      <md-progress-bar md-mode="indeterminate" v-if="sending" />
     </md-card>
   </form>
 </template>
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'login-form',
   props: {
@@ -39,9 +42,21 @@ export default {
   },
   data() {
     return {
-      email: null,
-      password: null,
+      email: '',
+      password: '',
+      sending: false,
     };
+  },
+  methods: {
+    async login() {
+      this.sending = true;
+      try {
+        let response = await this.$store.dispatch('userStore/login', { email: this.email, password: this.password });
+      } catch (err) {
+        console.log(err);
+      }
+      this.sending = false;
+    },
   },
 };
 </script>

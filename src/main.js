@@ -29,12 +29,16 @@ const router = new VueRouter({
 
 Vue.prototype.$Chartist = Chartist;
 
+axios.defaults.withCredentials = true;
+
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
 Vue.use(Notifications);
+
+window.axios = axios;
 
 /* eslint-disable no-new */
 new Vue({

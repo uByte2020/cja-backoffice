@@ -8,28 +8,29 @@
 
       <md-card-content>
         <div class="md-layout-item md-small-size-100">
-          <md-field :class="getValidationClass('firstName')">
+          <md-field :class="getValidationClass('name')">
             <label for="first-name">Name</label>
             <md-input
               name="first-name"
               id="first-name"
               autocomplete="given-name"
-              v-model="form.firstName"
+              v-model="form.name"
               :disabled="sending"
             />
-            <span class="md-error" v-if="!$v.form.firstName.required">The first name is required</span>
-            <span class="md-error" v-else-if="!$v.form.firstName.minlength">Invalid first name</span>
+            <span class="md-error" v-if="!$v.form.name.required">The first name is required</span>
+            <span class="md-error" v-else-if="!$v.form.name.minlength">Invalid first name</span>
           </md-field>
         </div>
         <div class="md-layout-item md-small-size-100">
-          <md-field :class="getValidationClass('perfil')">
-            <label for="perfil">Perfil</label>
-            <md-select name="perfil" id="perfil" v-model="form.perfil" md-dense :disabled="sending">
+          <md-field :class="getValidationClass('role')">
+            <label for="role">Perfil</label>
+            <md-select name="role" id="role" v-model="form.role" md-dense :disabled="sending">
               <md-option></md-option>
-              <md-option value="M">M</md-option>
-              <md-option value="F">F</md-option>
+              <md-option v-for="perfil in perfils" :key="perfil._id" :value="perfil.perfilCode">{{
+                perfil.perfil
+              }}</md-option>
             </md-select>
-            <span class="md-error" v-if="!$v.form.perfil.required">The Perfil is required</span>
+            <span class="md-error" v-if="!$v.form.role.required">The Perfil is required</span>
           </md-field>
         </div>
         <div class="md-layout">
@@ -56,11 +57,10 @@
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field :class="getValidationClass('confirmPassword')">
+            <md-field :class="getValidationClass('passwordConfirm')">
               <label>Confirmar Password</label>
-              <md-input v-model="form.confirmPassword" type="password"></md-input>
-              <span class="md-error" v-if="!$v.form.confirmPassword.required">The first name is required</span>
-              <span class="md-error" v-if="!$v.form.confirmPassword.verifyPassword">Passwords diferentes</span>
+              <md-input v-model="form.passwordConfirm" type="password"></md-input>
+              <span class="md-error" v-if="!$v.form.passwordConfirm.required">The first name is required</span>
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-center">
@@ -79,6 +79,7 @@
 <script>
 const { validationMixin, default: Vuelidate } = require('vuelidate');
 const { required, email, minLength, maxLength } = require('vuelidate/lib/validators');
+import status from './../../utils/statusEnum';
 
 export default {
   name: 'sigin-form',
@@ -89,13 +90,16 @@ export default {
     },
   },
   mixins: [validationMixin],
+  mounted() {
+    this.$store.dispatch('getPerfils');
+  },
   data: () => ({
     form: {
-      firstName: null,
-      perfil: null,
+      name: null,
+      role: null,
       email: null,
       password: null,
-      confirmPassword: null,
+      passwordConfirm: null,
     },
     userSaved: false,
     sending: false,
@@ -103,11 +107,11 @@ export default {
   }),
   validations: {
     form: {
-      firstName: {
+      name: {
         required,
         minLength: minLength(3),
       },
-      perfil: {
+      role: {
         required,
       },
       email: {
@@ -117,9 +121,9 @@ export default {
       password: {
         required,
       },
-      confirmPassword: {
+      passwordConfirm: {
         required,
-        // verifyPassword: (value, vm) => value === vm.form.confirmPassword,
+        // verifyPassword: (value, vm) => value === vm.form.passwordConfirm,
       },
     },
   },
@@ -135,17 +139,24 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.firstName = null;
+      this.form.name = null;
       this.form.password = null;
-      this.form.confirmPassword = null;
-      this.form.perfil = null;
+      this.form.passwordConfirm = null;
+      this.form.role = null;
       this.form.email = null;
     },
-    saveUser() {
+    async saveUser() {
       this.sending = true;
-      this.userSaved = true;
+      try {
+        let response = await this.$store.dispatch('userStore/signup', this.form);
+        console.log(response);
+        this.userSaved = true;
+        this.clearForm();
+      } catch (err) {
+        console.log(err);
+        this.notifyVue(status.DANGER, err.message);
+      }
       this.sending = false;
-      this.clearForm();
     },
     validateUser() {
       this.$v.$touch();
@@ -153,6 +164,20 @@ export default {
       if (!this.$v.$invalid) {
         this.saveUser();
       }
+    },
+    notifyVue(status, message) {
+      this.$notify({
+        message: message,
+        icon: 'add_alert',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: status,
+      });
+    },
+  },
+  computed: {
+    perfils() {
+      return this.$store.getters.getPerfils;
     },
   },
 };
