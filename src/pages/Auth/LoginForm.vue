@@ -56,6 +56,8 @@ export default {
         console.log(err);
       }
       this.sending = false;
+      const isAuth = this.$store.getters['userStore/getIsAuth'];
+      if (isAuth) this.$router.push({ path: '/' });
     },
   },
 };

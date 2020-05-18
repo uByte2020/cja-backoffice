@@ -40,6 +40,25 @@ Vue.use(Notifications);
 
 window.axios = axios;
 
+router.beforeEach(async (to, from, next) => {
+  const isAuth = store.getters['userStore/getIsAuth'];
+  if (!isAuth) {
+    try {
+      await store.dispatch('userStore/isLogged');
+    } catch (err) {
+      if (to.path !== '/login' && to.path !== '/signup') next('/login');
+    }
+  } else {
+    if (1 === 0) {
+      if (to.path !== '/bloqued') next('/bloqued');
+    } else if (to.path === '/login' || to.path === '/bloqued' || to.path === '/signup') {
+      next('/');
+    }
+  }
+
+  next();
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

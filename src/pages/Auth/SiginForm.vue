@@ -26,9 +26,11 @@
             <label for="role">Perfil</label>
             <md-select name="role" id="role" v-model="form.role" md-dense :disabled="sending">
               <md-option></md-option>
-              <md-option v-for="perfil in perfils" :key="perfil._id" :value="perfil.perfilCode">{{
+              <md-option v-for="perfil in perfils" :key="perfil._id" :value="perfil.perfilCode">
+                {{
                 perfil.perfil
-              }}</md-option>
+                }}
+              </md-option>
             </md-select>
             <span class="md-error" v-if="!$v.form.role.required">The Perfil is required</span>
           </md-field>
@@ -60,7 +62,10 @@
             <md-field :class="getValidationClass('passwordConfirm')">
               <label>Confirmar Password</label>
               <md-input v-model="form.passwordConfirm" type="password"></md-input>
-              <span class="md-error" v-if="!$v.form.passwordConfirm.required">The first name is required</span>
+              <span
+                class="md-error"
+                v-if="!$v.form.passwordConfirm.required"
+              >The first name is required</span>
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-center">
@@ -149,7 +154,6 @@ export default {
       this.sending = true;
       try {
         let response = await this.$store.dispatch('userStore/signup', this.form);
-        console.log(response);
         this.userSaved = true;
         this.clearForm();
       } catch (err) {

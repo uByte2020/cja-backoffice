@@ -32,7 +32,22 @@ const userStore = {
           });
       });
     },
-    logout: (context, credencial) => {},
+    logout: (context) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('http://127.0.0.1:3000/api/v1/users/logout')
+          .then((response) => {
+            context.commit('setUser', null);
+            context.commit('setIsAuth', false);
+            context.commit('setResponse', { status: response.data.status }, { root: true });
+            resolve(response.data);
+          })
+          .catch((error) => {
+            context.commit('setResponse', { status: 'error', message: 'Loggout Error' }, { root: true });
+            reject(error);
+          });
+      });
+    },
     signup: (context, user) => {
       return new Promise((resolve, reject) => {
         axios
@@ -50,9 +65,34 @@ const userStore = {
           });
       });
     },
-    isLogged: (context) => {},
+    isLogged: (context) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('http://127.0.0.1:3000/api/v1/users/isLogged')
+          .then((response) => {
+            context.commit('setUser', response.data.data.user);
+            context.commit('setIsAuth', true);
+            context.commit('setResponse', { status: response.data.status }, { root: true });
+            console.log(response);
+            resolve(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
   },
-  getters: {},
+  getters: {
+    getUser: (state) => {
+      return state.user;
+    },
+    getIsAuth: (state) => {
+      return state.isAuth;
+    },
+  },
 };
 
 export default userStore;
