@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper wrapper-full-page">
+    <notifications></notifications>
     <div
       class="page-header login-page header-filter"
       filter-color="black"
@@ -11,7 +12,9 @@
     ></div>
     <div class="content div-content-center">
       <div class="md-layout">
-        <div class="md-layout-item md-small-size-100 md-xsmall-size-100 md-medium-size-60 md-size-60 card-center">
+        <div
+          class="md-layout-item md-small-size-100 md-xsmall-size-100 md-medium-size-60 md-size-60 card-center"
+        >
           <login-form data-background-color="green"></login-form>
         </div>
       </div>

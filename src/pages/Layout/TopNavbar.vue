@@ -82,9 +82,12 @@
               </a>
             </li>
 
-            <md-list-item @click="logout()" href="#/logout">
+            <md-list-item href="#/user">
               <i class="material-icons">person</i>
               <p class="hidden-lg hidden-md">Profile</p>
+            </md-list-item>
+            <md-list-item @click="logout()" href="#/logout">
+              <a>Sair</a>
             </md-list-item>
           </md-list>
         </div>

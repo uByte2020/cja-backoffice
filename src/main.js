@@ -45,6 +45,9 @@ router.beforeEach(async (to, from, next) => {
   if (!isAuth) {
     try {
       await store.dispatch('userStore/isLogged');
+      if (to.path === '/login' || to.path === '/bloqued' || to.path === '/signup') {
+        next('/');
+      }
     } catch (err) {
       if (to.path !== '/login' && to.path !== '/signup') next('/login');
     }

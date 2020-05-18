@@ -8,7 +8,7 @@
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
-          <img :src="imgLogo" alt="" />
+          <img :src="imgLogo" alt />
         </div>
       </a>
 
@@ -16,9 +16,7 @@
         href="https://www.creative-tim.com/product/vue-material-dashboard"
         target="_blank"
         class="simple-text logo-normal"
-      >
-        {{ title }}
-      </a>
+      >{{ getUserName }}</a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -30,62 +28,68 @@
             :key="link.name + index"
             :to="link.path"
             :link="link"
-          >
-          </sidebar-link>
+          ></sidebar-link>
         </slot>
       </md-list>
     </div>
   </div>
 </template>
 <script>
-import SidebarLink from "./SidebarLink.vue";
+import SidebarLink from './SidebarLink.vue';
 
 export default {
   components: {
-    SidebarLink
+    SidebarLink,
   },
   props: {
     title: {
       type: String,
-      default: "Vue MD"
+      default: 'Vue MD',
     },
     sidebarBackgroundImage: {
       type: String,
-      default: require("@/assets/img/sidebar-2.jpg")
+      default: require('@/assets/img/sidebar-2.jpg'),
     },
     imgLogo: {
       type: String,
-      default: require("@/assets/img/vue-logo.png")
+      default: require('@/assets/img/vue-logo.png'),
     },
     sidebarItemColor: {
       type: String,
-      default: "green",
-      validator: value => {
-        let acceptedValues = ["", "purple", "blue", "green", "orange", "red"];
+      default: 'green',
+      validator: (value) => {
+        let acceptedValues = ['', 'purple', 'blue', 'green', 'orange', 'red'];
         return acceptedValues.indexOf(value) !== -1;
-      }
+      },
     },
     sidebarLinks: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     autoClose: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   provide() {
     return {
-      autoClose: this.autoClose
+      autoClose: this.autoClose,
     };
   },
   computed: {
     sidebarStyle() {
       return {
-        backgroundImage: `url(${this.sidebarBackgroundImage})`
+        backgroundImage: `url(${this.sidebarBackgroundImage})`,
       };
-    }
-  }
+    },
+    getUser() {
+      return this.$store.getters['userStore/getUser'];
+    },
+    getUserName() {
+      const name = this.getUser.name.split(' ');
+      return `${name[0]} ${name[name.length - 1]}`;
+    },
+  },
 };
 </script>
 <style>

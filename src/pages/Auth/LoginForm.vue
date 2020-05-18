@@ -31,7 +31,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-
+import status from './../../utils/statusEnum';
 export default {
   name: 'login-form',
   props: {
@@ -53,11 +53,20 @@ export default {
       try {
         let response = await this.$store.dispatch('userStore/login', { email: this.email, password: this.password });
       } catch (err) {
-        console.log(err);
+        this.notifyVue(status.DANGER, err.message);
       }
       this.sending = false;
       const isAuth = this.$store.getters['userStore/getIsAuth'];
       if (isAuth) this.$router.push({ path: '/' });
+    },
+    notifyVue(status, message) {
+      this.$notify({
+        message: message,
+        icon: 'add_alert',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: status,
+      });
     },
   },
 };

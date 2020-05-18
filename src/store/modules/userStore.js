@@ -73,7 +73,6 @@ const userStore = {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
             context.commit('setResponse', { status: response.data.status }, { root: true });
-            console.log(response);
             resolve(response.data);
           })
           .catch((error) => {

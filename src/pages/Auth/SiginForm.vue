@@ -51,6 +51,20 @@
               <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
             </md-field>
           </div>
+          <div class="md-layout-item md-small-size-100">
+            <md-field :class="getValidationClass('telemovel')">
+              <label for="first-name">Telemovel</label>
+              <md-input
+                name="telemovel"
+                id="telemovel"
+                autocomplete="given-name"
+                v-model="form.telemovel"
+                :disabled="sending"
+              />
+              <span class="md-error" v-if="!$v.form.telemovel.required">The telemovel is required</span>
+              <span class="md-error" v-else-if="!$v.form.telemovel.isValid">Invalid telemovel</span>
+            </md-field>
+          </div>
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('password')">
               <label>Password</label>
@@ -103,6 +117,7 @@ export default {
       name: null,
       role: null,
       email: null,
+      telemovel: null,
       password: null,
       passwordConfirm: null,
     },
@@ -122,6 +137,10 @@ export default {
       email: {
         required,
         email,
+      },
+      telemovel: {
+        required,
+        isValid: (value) => /^([+]?244){0,1}\s{0,1}9([1-4]|9)[0-9]{1}\s{0,1}[0-9]{3}\s{0,1}[0-9]{3}$/g.test(value),
       },
       password: {
         required,
@@ -149,18 +168,20 @@ export default {
       this.form.passwordConfirm = null;
       this.form.role = null;
       this.form.email = null;
+      this.form.telemovel = null;
     },
     async saveUser() {
       this.sending = true;
       try {
         let response = await this.$store.dispatch('userStore/signup', this.form);
         this.userSaved = true;
+        this.sending = false;
         this.clearForm();
       } catch (err) {
-        console.log(err);
+        this.sending = false;
         this.notifyVue(status.DANGER, err.message);
       }
-      this.sending = false;
+      if (isAuth) this.$router.push({ path: '/' });
     },
     validateUser() {
       this.$v.$touch();
