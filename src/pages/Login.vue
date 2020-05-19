@@ -13,7 +13,7 @@
     <div class="content div-content-center">
       <div class="md-layout">
         <div
-          class="md-layout-item md-small-size-100 md-xsmall-size-100 md-medium-size-60 md-size-60 card-center"
+          class="md-layout-item md-small-size-90 md-xsmall-size-90 md-medium-size-60 md-size-30 card-center"
         >
           <login-form data-background-color="green"></login-form>
         </div>
@@ -38,12 +38,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (min-width: 768px) {
-  .div-content-center {
-    left: 30%;
-  }
-}
-
 .md-layout-item {
   margin: auto;
 }
@@ -52,7 +46,8 @@ export default {
   /* position: relative; */
   position: absolute !important;
   margin: auto;
-  top: 8%;
+  top: 0%;
+  width: 100%;
 }
 .header-filter {
   position: relative;

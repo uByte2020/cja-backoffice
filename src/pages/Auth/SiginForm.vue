@@ -1,5 +1,5 @@
 <template>
-  <form novalidate class="md-layout" @submit.prevent="validateUser">
+  <form novalidate class="md-layout" @submit.prevent="validateUser" style="overflow-y: hidden;">
     <md-card class="md-card">
       <md-card-header :data-background-color="dataBackgroundColor" class="text-center">
         <h4 class="title">CJA - Mediação de Seguros</h4>
@@ -83,7 +83,7 @@
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-center">
-            <md-card-actions>
+            <md-card-actions style="justify-content: center!important;">
               <md-button type="submit" class="md-raised md-success" :disabled="sending">Registrar</md-button>
             </md-card-actions>
           </div>

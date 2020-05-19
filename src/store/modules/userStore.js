@@ -5,10 +5,14 @@ const userStore = {
   state: () => ({
     isAuth: false,
     user: null,
+    users: [],
   }),
   mutations: {
     setUser: (state, user) => {
       state.user = user;
+    },
+    setUsers: (state, users) => {
+      state.users = users;
     },
     setIsAuth: (state, isAuth) => {
       state.isAuth = isAuth;
@@ -83,6 +87,22 @@ const userStore = {
           });
       });
     },
+    getUsers: (context) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('http://127.0.0.1:3000/api/v1/users')
+          .then((response) => {
+            context.commit('setUsers', response.data.data.docs);
+            context.commit('setResponse', { status: response.data.status }, { root: true });
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
   },
   getters: {
     getUser: (state) => {
@@ -90,6 +110,18 @@ const userStore = {
     },
     getIsAuth: (state) => {
       return state.isAuth;
+    },
+    getUsers: (state) => {
+      return state.users;
+    },
+    getMediadores: (state) => {
+      return state.users.filter((user) => user.role === 1);
+    },
+    getClientes: (state) => {
+      return state.users.filter((user) => user.role >= 2);
+    },
+    countClientes: (state) => {
+      return state.users.filter((user) => user.role >= 2).length;
     },
   },
 };

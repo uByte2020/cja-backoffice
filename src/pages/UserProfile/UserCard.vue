@@ -5,29 +5,30 @@
     </div>
 
     <md-card-content>
-      <h6 class="category text-gray">CEO / Co-Founder</h6>
-      <h4 class="card-title">Alec Thompson</h4>
-      <p class="card-description">
-        Don't be scared of the truth because we need to restart the human
-        foundation in truth And I love you like Kanye loves Kanye I love Rick
-        Owens’ bed design but the back is...
-      </p>
-      <md-button class="md-round md-success">Follow</md-button>
+      <h6 class="category text-gray">{{ getUser.role }}</h6>
+      <h4 class="card-title">{{ getUser.name }}</h4>
+      <p class="card-description">{{ getUser.descicao }}</p>
+      <!-- <md-button class="md-round md-success">Actualizar Foto</md-button> -->
     </md-card-content>
   </md-card>
 </template>
 <script>
 export default {
-  name: "user-card",
+  name: 'user-card',
   props: {
     cardUserImage: {
       type: String,
-      default: require("@/assets/img/faces/marc.jpg")
-    }
+      default: require('@/assets/img/faces/marc.jpg'),
+    },
   },
   data() {
     return {};
-  }
+  },
+  computed: {
+    getUser() {
+      return this.$store.getters['userStore/getUser'];
+    },
+  },
 };
 </script>
 <style></style>

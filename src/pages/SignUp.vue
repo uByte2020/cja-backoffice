@@ -11,9 +11,10 @@
           "
     ></div>
     <div class="content div-content-center">
-      <div class="md-layout">
+      <div class="md-layout" style="overflow-y: scroll;">
         <div
-          class="md-layout-item md-small-size-100 md-xsmall-size-100 md-medium-size-60 md-size-60 card-center"
+          style="overflow-y: hidden;"
+          class="md-layout-item md-small-size-100 md-xsmall-size-100 md-medium-size-60 md-size-40 card-center"
         >
           <sigin-form data-background-color="green"></sigin-form>
         </div>
@@ -38,12 +39,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (min-width: 768px) {
-  .div-content-center {
-    left: 20%;
-  }
-}
-
 .md-layout-item {
   margin: auto;
 }
@@ -52,8 +47,17 @@ export default {
   /* position: relative; */
   position: absolute !important;
   margin: auto;
-  top: 0;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
+
+.div-content-center::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;
+}
+
 .header-filter {
   position: relative;
   filter: brightness(0.6);

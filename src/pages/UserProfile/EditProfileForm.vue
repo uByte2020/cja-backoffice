@@ -2,74 +2,62 @@
   <form>
     <md-card>
       <md-card-header :data-background-color="dataBackgroundColor">
-        <h4 class="title">Edit Profile</h4>
-        <p class="category">Complete your profile</p>
+        <h4 class="title">Editar Perfil</h4>
+        <p class="category">Complete o seu perfil</p>
       </md-card-header>
 
       <md-card-content>
         <div class="md-layout">
-          <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-field>
-              <label>Company (disabled)</label>
-              <md-input v-model="disabled" disabled></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-field>
-              <label>User Name</label>
-              <md-input v-model="username" type="text"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
-            <md-field>
-              <label>Email Address</label>
-              <md-input v-model="emailadress" type="email"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <label>First Name</label>
-              <md-input v-model="firstname" type="text"></md-input>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-50">
-            <md-field>
-              <label>Last Name</label>
-              <md-input v-model="lastname" type="text"></md-input>
-            </md-field>
-          </div>
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field>
-              <label>Adress</label>
-              <md-input v-model="address" type="text"></md-input>
+              <label>Nome</label>
+              <md-input v-model="user.name" type="text"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
+          <div class="md-layout-item md-small-size-100 md-size-60">
             <md-field>
-              <label>City</label>
-              <md-input v-model="city" type="text"></md-input>
+              <label>Email</label>
+              <md-input v-model="user.email" type="email"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
+          <div class="md-layout-item md-small-size-100 md-size-40">
             <md-field>
-              <label>Country</label>
-              <md-input v-model="country" type="text"></md-input>
+              <label>Telemovel</label>
+              <md-input v-model="user.telemovel" type="text"></md-input>
             </md-field>
           </div>
-          <div class="md-layout-item md-small-size-100 md-size-33">
+          <div class="md-layout-item md-small-size-100 md-size-60">
             <md-field>
-              <label>Postal Code</label>
-              <md-input v-model="code" type="number"></md-input>
+              <label>Endereco</label>
+              <md-input v-model="user.address" type="text"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-40">
+            <md-field>
+              <label>NIF</label>
+              <md-input v-model="user.nif" type="text"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-40">
+            <md-field>
+              <label>Sector de Actividade</label>
+              <md-input v-model="user.sectorActividade" type="text"></md-input>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-60">
+            <md-field>
+              <label>Actividade</label>
+              <md-input v-model="user.actividade" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-size-100">
             <md-field maxlength="5">
-              <label>About Me</label>
-              <md-textarea v-model="aboutme"></md-textarea>
+              <label>Sobre</label>
+              <md-textarea v-model="user.descricao"></md-textarea>
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised md-success">Update Profile</md-button>
+            <md-button class="md-raised md-success">Actualizar</md-button>
           </div>
         </div>
       </md-card-content>
@@ -78,28 +66,46 @@
 </template>
 <script>
 export default {
-  name: "edit-profile-form",
+  name: 'edit-profile-form',
   props: {
     dataBackgroundColor: {
       type: String,
-      default: ""
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      username: null,
-      disabled: null,
-      emailadress: null,
-      lastname: null,
-      firstname: null,
-      address: null,
-      city: null,
-      country: null,
-      code: null,
-      aboutme:
-        "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
+      user: {
+        name: null,
+        descricao: null,
+        email: null,
+        telemovel: null,
+        endereco: null,
+        photo: null,
+        actividade: null,
+        sectorActividade: null,
+        nif: null,
+        role: null,
+      },
     };
-  }
+  },
+  mounted() {
+    this.user.name = this.getUser.name;
+    this.user.descricao = this.getUser.descricao;
+    this.user.email = this.getUser.email;
+    this.user.telemovel = this.getUser.telemovel;
+    this.user.endereco = this.getUser.endereco;
+    this.user.photo = this.getUser.photo;
+    this.user.actividade = this.getUser.actividade;
+    this.user.sectorActividade = this.getUser.sectorActividade;
+    this.user.nif = this.getUser.nif;
+    this.user.role = this.getUser.role;
+  },
+  computed: {
+    getUser() {
+      return this.$store.getters['userStore/getUser'];
+    },
+  },
 };
 </script>
 <style></style>
