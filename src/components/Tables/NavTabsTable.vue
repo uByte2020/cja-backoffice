@@ -15,9 +15,6 @@ export default {
     items: Array,
     proprierty: String,
   },
-  mounted() {
-    console.log(this.proprierty);
-  },
   data() {
     return {
       selected: [],

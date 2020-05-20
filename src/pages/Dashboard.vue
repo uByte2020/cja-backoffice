@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <notifications></notifications>
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">

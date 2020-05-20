@@ -82,7 +82,7 @@
               </a>
             </li>
 
-            <md-list-item href="#/user">
+            <md-list-item @click="profilePage()" href="#">
               <i class="material-icons">person</i>
               <p class="hidden-lg hidden-md">Profile</p>
             </md-list-item>
@@ -124,6 +124,9 @@ export default {
         console.log(err);
       }
       this.$router.push({ path: '/login' });
+    },
+    profilePage() {
+      this.$router.push({ path: '/user' });
     },
   },
 };

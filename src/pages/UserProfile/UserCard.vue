@@ -1,14 +1,22 @@
 <template>
   <md-card class="md-card-profile">
+    <notifications></notifications>
     <div class="md-card-avatar">
-      <img class="img" :src="cardUserImage" />
+      <img class="img" :src="getProfilePhoto" />
     </div>
 
     <md-card-content>
-      <h6 class="category text-gray">{{ getUser.role }}</h6>
+      <h6 class="category text-gray">{{ getUser.role.perfil }}</h6>
       <h4 class="card-title">{{ getUser.name }}</h4>
       <p class="card-description">{{ getUser.descicao }}</p>
-      <!-- <md-button class="md-round md-success">Actualizar Foto</md-button> -->
+      <input
+        @change="updateProfilePhoto($event)"
+        style="display: none"
+        type="file"
+        accept="image/jpeg, image/png, image/jpg"
+        ref="fileInput"
+      />
+      <md-button class="md-round md-success" @click="$refs.fileInput.click()">Actualizar Foto</md-button>
     </md-card-content>
   </md-card>
 </template>
@@ -27,6 +35,23 @@ export default {
   computed: {
     getUser() {
       return this.$store.getters['userStore/getUser'];
+    },
+    getProfilePhoto() {
+      return this.$store.getters['userStore/getProfilePhoto'];
+    },
+  },
+  methods: {
+    updateProfilePhoto(event) {
+      const files = event.currentTarget.files;
+      (async () => {
+        try {
+          const user = new FormData();
+          user.append('photo', files[0]);
+          let response = await this.$store.dispatch('userStore/updateMe', user);
+        } catch (err) {
+          this.notifyVue(status.DANGER, err.message);
+        }
+      })();
     },
   },
 };

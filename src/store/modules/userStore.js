@@ -103,10 +103,31 @@ const userStore = {
           });
       });
     },
+    updateMe: (context, user) => {
+      console.log(user);
+      return new Promise((resolve, reject) => {
+        axios
+          .patch('http://127.0.0.1:3000/api/v1/users/updateMe', user)
+          .then((response) => {
+            context.commit('setUser', response.data.data.user);
+            context.commit('setIsAuth', true);
+            context.commit('setResponse', { status: response.data.status }, { root: true });
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
   },
   getters: {
     getUser: (state) => {
       return state.user;
+    },
+    getProfilePhoto: (state) => {
+      return `http://localhost:3000/img/users/${state.user.photo}`;
     },
     getIsAuth: (state) => {
       return state.isAuth;
@@ -115,13 +136,13 @@ const userStore = {
       return state.users;
     },
     getMediadores: (state) => {
-      return state.users.filter((user) => user.role === 1);
+      return state.users.filter((user) => user.role.perfilCode === 1);
     },
     getClientes: (state) => {
-      return state.users.filter((user) => user.role >= 2);
+      return state.users.filter((user) => user.role.perfilCode >= 2);
     },
     countClientes: (state) => {
-      return state.users.filter((user) => user.role >= 2).length;
+      return state.users.filter((user) => user.role.perfilCode >= 2).length;
     },
   },
 };

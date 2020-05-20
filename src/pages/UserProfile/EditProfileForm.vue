@@ -1,5 +1,6 @@
 <template>
   <form>
+    <notifications></notifications>
     <md-card>
       <md-card-header :data-background-color="dataBackgroundColor">
         <h4 class="title">Editar Perfil</h4>
@@ -29,7 +30,7 @@
           <div class="md-layout-item md-small-size-100 md-size-60">
             <md-field>
               <label>Endereco</label>
-              <md-input v-model="user.address" type="text"></md-input>
+              <md-input v-model="user.endereco" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-40">
@@ -57,7 +58,7 @@
             </md-field>
           </div>
           <div class="md-layout-item md-size-100 text-right">
-            <md-button class="md-raised md-success">Actualizar</md-button>
+            <md-button class="md-raised md-success" @click="update">Actualizar</md-button>
           </div>
         </div>
       </md-card-content>
@@ -85,7 +86,6 @@ export default {
         actividade: null,
         sectorActividade: null,
         nif: null,
-        role: null,
       },
     };
   },
@@ -94,16 +94,25 @@ export default {
     this.user.descricao = this.getUser.descricao;
     this.user.email = this.getUser.email;
     this.user.telemovel = this.getUser.telemovel;
-    this.user.endereco = this.getUser.endereco;
+    this.user.endereco = this.getUser.endereco.join(';');
     this.user.photo = this.getUser.photo;
     this.user.actividade = this.getUser.actividade;
     this.user.sectorActividade = this.getUser.sectorActividade;
     this.user.nif = this.getUser.nif;
-    this.user.role = this.getUser.role;
   },
   computed: {
     getUser() {
       return this.$store.getters['userStore/getUser'];
+    },
+  },
+  methods: {
+    async update() {
+      try {
+        this.user.endereco = this.user.endereco.split(';');
+        let response = await this.$store.dispatch('userStore/updateMe', this.user);
+      } catch (err) {
+        this.notifyVue(status.DANGER, err.message);
+      }
     },
   },
 };

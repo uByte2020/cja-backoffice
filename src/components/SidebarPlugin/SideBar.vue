@@ -8,15 +8,11 @@
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
-          <img :src="imgLogo" alt />
+          <img :src="getProfilePhoto" alt />
         </div>
       </a>
 
-      <a
-        href="https://www.creative-tim.com/product/vue-material-dashboard"
-        target="_blank"
-        class="simple-text logo-normal"
-      >{{ getUserName }}</a>
+      <a href="#" class="simple-text logo-normal">{{ getUserName }}</a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -88,6 +84,9 @@ export default {
     getUserName() {
       const name = this.getUser.name.split(' ');
       return `${name[0]} ${name[name.length - 1]}`;
+    },
+    getProfilePhoto() {
+      return this.$store.getters['userStore/getProfilePhoto'];
     },
   },
 };

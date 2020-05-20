@@ -21,13 +21,13 @@ const userStore = {
       return state.solicitacoes;
     },
     countSolicitacoesPendentes: (state) => {
-      return state.solicitacoes.filter((el) => el.estado === 2).length;
+      return state.solicitacoes.filter((el) => el.estado.estadoCode === 2).length;
     },
     countSolicitacoesAtendidas: (state) => {
-      return state.solicitacoes.filter((el) => el.estado === 1).length;
+      return state.solicitacoes.filter((el) => el.estado.estadoCode === 1).length;
     },
     countSolicitacoesCaducadas: (state) => {
-      return state.solicitacoes.filter((el) => el.estado === 3).length;
+      return state.solicitacoes.filter((el) => el.estado.estadoCode === 3).length;
     },
   },
 };
