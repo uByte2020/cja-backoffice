@@ -104,13 +104,28 @@ const userStore = {
       });
     },
     updateMe: (context, user) => {
-      console.log(user);
       return new Promise((resolve, reject) => {
         axios
           .patch('http://127.0.0.1:3000/api/v1/users/updateMe', user)
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
+            context.commit('setResponse', { status: response.data.status }, { root: true });
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
+    updateUser: (context, user) => {
+      console.log(user);
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`http://127.0.0.1:3000/api/v1/users/${user._id}`, user)
+          .then((response) => {
             context.commit('setResponse', { status: response.data.status }, { root: true });
             resolve(response.data);
           })

@@ -2,27 +2,29 @@
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <notifications></notifications>
 
-    <side-bar
-      :sidebar-item-color="sidebarBackground"
-      :sidebar-background-image="sidebarBackgroundImage"
-    >
+    <side-bar :sidebar-item-color="sidebarBackground" :sidebar-background-image="sidebarBackgroundImage">
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link>
+      <sidebar-link to="/table">
+        <md-icon>notifications</md-icon>
+        <p>Solicitações</p>
+      </sidebar-link>
+      <sidebar-link to="/typography">
+        <md-icon>library_books</md-icon>
+        <p>Simulação</p>
+      </sidebar-link>
+      <sidebar-link to="/users">
+        <md-icon>group</md-icon>
+        <p>Utilizadores</p>
+      </sidebar-link>
       <sidebar-link to="/user">
         <md-icon>person</md-icon>
         <p>Perfil</p>
       </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
-      </sidebar-link>
-      <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
-      </sidebar-link>
+      <!-- 
       <sidebar-link to="/icons">
         <md-icon>bubble_chart</md-icon>
         <p>Icons</p>
@@ -34,20 +36,17 @@
       <sidebar-link to="/notifications">
         <md-icon>notifications</md-icon>
         <p>Notifications</p>
-      </sidebar-link>
-      <sidebar-link to="/upgrade" class="active-pro">
+      </sidebar-link> -->
+      <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>
-      </sidebar-link>
+      </sidebar-link> -->
     </side-bar>
 
     <div class="main-panel">
       <top-navbar></top-navbar>
-
-      <fixed-plugin :color.sync="sidebarBackground" :image.sync="sidebarBackgroundImage"></fixed-plugin>
-
+      <!-- <fixed-plugin :color.sync="sidebarBackground" :image.sync="sidebarBackgroundImage"></fixed-plugin> -->
       <dashboard-content></dashboard-content>
-
       <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
   </div>
@@ -66,7 +65,7 @@ export default {
     DashboardContent,
     ContentFooter,
     MobileMenu,
-    FixedPlugin,
+    // FixedPlugin,
   },
   data() {
     return {
