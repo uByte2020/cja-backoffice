@@ -107,12 +107,8 @@ export default {
   },
   methods: {
     async update() {
-      try {
-        this.user.endereco = this.user.endereco.split(';');
-        let response = await this.$store.dispatch('userStore/updateMe', this.user);
-      } catch (err) {
-        this.notifyVue(status.DANGER, err.message);
-      }
+      this.user.endereco = this.user.endereco.split(';');
+      this.$emit('update-user', this.user);
     },
   },
 };

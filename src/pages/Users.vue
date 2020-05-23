@@ -8,7 +8,7 @@
             <p class="category">Todos utilizadores da Aplicação</p>
           </md-card-header>
           <md-card-content>
-            <TableUsers></TableUsers>
+            <TableUsers :users="getUsers"></TableUsers>
           </md-card-content>
         </md-card>
       </div>
@@ -21,5 +21,22 @@ import { TableUsers } from '@/pages';
 
 export default {
   components: { TableUsers },
+  methods: {
+    updateUser(user) {
+      (async () => {
+        try {
+          let response = await this.$store.dispatch('userStore/updateUser', user);
+          this.fecthUsers();
+        } catch (err) {
+          this.notifyVue(status.DANGER, err.message);
+        }
+      })();
+    },
+  },
+  computed: {
+    getUsers() {
+      return this.$store.getters['userStore/getUsers'];
+    },
+  },
 };
 </script>

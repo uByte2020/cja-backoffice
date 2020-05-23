@@ -11,6 +11,7 @@ import UpgradeToPRO from '@/pages/UpgradeToPRO.vue';
 import Login from '@/pages/Login.vue';
 import SignUp from '@/pages/SignUp.vue';
 import Users from '@/pages/Users.vue';
+import Simulacao from '@/pages/Simulacao.vue';
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
         path: 'users',
         name: 'users',
         component: Users,
+      },
+      {
+        path: 'simular-seguro',
+        name: 'simular-seguro',
+        component: Simulacao,
       },
       {
         path: 'table',

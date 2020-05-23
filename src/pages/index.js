@@ -7,5 +7,19 @@ import EditProfileForm from '../pages/UserProfile/EditProfileForm.vue';
 import LoginForm from '../pages/Auth/LoginForm.vue';
 import SiginForm from '../pages/Auth/SiginForm.vue';
 import TableUsers from '../pages/Users/TableUsers.vue';
+import SeguroViagem from '../pages/Simulacao/SeguroViagem.vue';
+import SeguradoraModalidade from '../pages/Simulacao/SeguradoraModalidade.vue';
+import SimulacaoResult from '../pages/Simulacao/SimulacaoResult.vue';
+import SeguroViagemPreco from '../pages/Simulacao/SeguroViagemPreco.vue';
 
-export { UserCard, EditProfileForm, LoginForm, SiginForm, TableUsers };
+export {
+  UserCard,
+  EditProfileForm,
+  LoginForm,
+  SiginForm,
+  TableUsers,
+  SeguroViagem,
+  SeguradoraModalidade,
+  SimulacaoResult,
+  SeguroViagemPreco,
+};

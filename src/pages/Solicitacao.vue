@@ -23,16 +23,6 @@ export default {
   components: {
     SolicitacaoTable,
   },
-  mounted() {
-    (async () => {
-      try {
-        let response = await this.$store.dispatch('solicitacaoStore/getSolicitacoes');
-        console.log(this.getSolicitacoes);
-      } catch (err) {
-        this.notifyVue(status.DANGER, err.message);
-      }
-    })();
-  },
   computed: {
     getSolicitacoes() {
       return this.$store.getters['solicitacaoStore/getSolicitacoes'];

@@ -1,6 +1,6 @@
 <template>
   <form>
-    <md-card class="md-card">
+    <md-card class="md-card md-elevation-24">
       <md-card-header :data-background-color="dataBackgroundColor" class="text-center">
         <h4 class="title">CJA - Mediação de Seguros</h4>
         <p class="category">Entrar</p>

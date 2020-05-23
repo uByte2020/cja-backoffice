@@ -107,36 +107,6 @@ export default {
     NavTabsTable,
     OrderedTable,
   },
-  mounted() {
-    (async () => {
-      try {
-        let response = await this.$store.dispatch('solicitacaoStore/getSolicitacoes');
-      } catch (err) {
-        this.notifyVue(status.DANGER, err.message);
-      }
-    })();
-    (async () => {
-      try {
-        let response = await this.$store.dispatch('userStore/getUsers');
-      } catch (err) {
-        this.notifyVue(status.DANGER, err.message);
-      }
-    })();
-    (async () => {
-      try {
-        let response = await this.$store.dispatch('getSeguradoras');
-      } catch (err) {
-        this.notifyVue(status.WARNING, err.message);
-      }
-    })();
-    (async () => {
-      try {
-        let response = await this.$store.dispatch('getModalidades');
-      } catch (err) {
-        this.notifyVue(status.WARNING, err.message);
-      }
-    })();
-  },
   data() {
     return {};
   },

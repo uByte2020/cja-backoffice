@@ -43,15 +43,9 @@ export default {
   methods: {
     updateProfilePhoto(event) {
       const files = event.currentTarget.files;
-      (async () => {
-        try {
-          const user = new FormData();
-          user.append('photo', files[0]);
-          let response = await this.$store.dispatch('userStore/updateMe', user);
-        } catch (err) {
-          this.notifyVue(status.DANGER, err.message);
-        }
-      })();
+      const user = new FormData();
+      user.append('photo', files[0]);
+      this.$emit('update-user', this.user);
     },
   },
 };

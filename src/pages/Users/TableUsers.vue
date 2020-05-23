@@ -1,6 +1,5 @@
 <template>
   <div>
-    <notifications></notifications>
     <md-table v-model="searched" md-sort="name" md-sort-order="asc">
       <md-table-toolbar>
         <div class="md-toolbar-section-start"></div>
@@ -22,7 +21,8 @@
         <md-table-cell md-label="Telemovel" md-sort-by="telemovel">{{ item.telemovel }}</md-table-cell>
         <md-table-cell md-label="Perfil" md-sort-by="role.perfilCode">{{ item.role.perfil }}</md-table-cell>
         <md-table-cell md-label="Opções">
-          <toggle-button :value="item.isBloqued" @change="changeBloqState(item)" />
+          <md-switch :value="item.isBloqued" @change="changeBloqState(item)"></md-switch>
+          <!-- <toggle-button :value="item.isBloqued" @change="changeBloqState(item)" /> -->
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -46,6 +46,9 @@ import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
   name: 'TableUsers',
+  props: {
+    users: Array,
+  },
   data: () => ({
     search: null,
     searched: [],
@@ -55,40 +58,21 @@ export default {
       window.alert('Noop');
     },
     searchOnTable() {
-      this.searched = searchByName(this.getUsers, this.search);
+      this.searched = searchByName(this.users, this.search);
     },
     changeBloqState(item) {
       item.isBloqued = !item.isBloqued;
-      (async () => {
-        try {
-          let response = await this.$store.dispatch('userStore/updateUser', item);
-          this.fecthUsers();
-        } catch (err) {
-          this.notifyVue(status.DANGER, err.message);
-        }
-      })();
     },
     fecthUsers() {
-      (async () => {
-        try {
-          let response = await this.$store.dispatch('userStore/getUsers');
-          this.searched = this.getUsers;
-        } catch (err) {
-          this.notifyVue(status.DANGER, err.message);
-        }
-      })();
+      this.searched = this.users;
     },
   },
   mounted() {
     this.fecthUsers();
   },
-  computed: {
-    getUsers() {
-      return this.$store.getters['userStore/getUsers'];
-    },
-  },
+
   components: {
-    ToggleButton,
+    // ToggleButton,
   },
 };
 </script>

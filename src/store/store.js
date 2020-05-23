@@ -15,6 +15,8 @@ export default new Vuex.Store({
     perfils: [],
     modalidades: [],
     seguradoras: [],
+    planos: [],
+    simulacaoViagem: [],
     response: null,
   }),
   mutations: {
@@ -30,6 +32,12 @@ export default new Vuex.Store({
     setResponse: (state, response) => {
       state.response = response;
     },
+    setPlanos: (state, planos) => {
+      state.planos = planos;
+    },
+    setSimulacaoViagem: (state, simulacaoViagem) => {
+      state.simulacaoViagem = simulacaoViagem;
+    },
   },
   actions: {
     getPerfils: async (context) => {
@@ -44,6 +52,15 @@ export default new Vuex.Store({
       const result = await axios.get('http://127.0.0.1:3000/api/v1/modalidades');
       if (result.data.status === status.SUCCESS) context.commit('setModalidades', result.data.data.docs);
     },
+    getPlanos: async (context) => {
+      const result = await axios.get('http://127.0.0.1:3000/api/v1/seguros/viagens/planos');
+      if (result.data.status === status.SUCCESS) context.commit('setPlanos', result.data.data.docs);
+    },
+    simularSeguroViagem: async (context, seguro) => {
+      const result = await axios.post('http://127.0.0.1:3000/api/v1/seguros/viagens/simular', seguro);
+      console.log(result.data.data.precos);
+      if (result.data.status === status.SUCCESS) context.commit('setSimulacaoViagem', result.data.data.precos);
+    },
   },
   getters: {
     getPerfils: (state) => {
@@ -54,6 +71,12 @@ export default new Vuex.Store({
     },
     getModalidades: (state) => {
       return state.modalidades;
+    },
+    getPlanos: (state) => {
+      return state.planos;
+    },
+    getSimulacaoViagem: (state) => {
+      return state.simulacaoViagem;
     },
   },
 });
