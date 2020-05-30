@@ -11,6 +11,8 @@ import SeguroViagem from '../pages/Simulacao/SeguroViagem.vue';
 import SeguradoraModalidade from '../pages/Simulacao/SeguradoraModalidade.vue';
 import SimulacaoResult from '../pages/Simulacao/SimulacaoResult.vue';
 import SeguroViagemPreco from '../pages/Simulacao/SeguroViagemPreco.vue';
+import SolicitacaoTable from '../pages/Solicitacao/SolicitacaoTable.vue';
+import SolicitacaoViagemDetalhe from '../pages/Solicitacao/SolicitacaoViagemDetalhe.vue';
 
 export {
   UserCard,
@@ -22,4 +24,6 @@ export {
   SeguradoraModalidade,
   SimulacaoResult,
   SeguroViagemPreco,
+  SolicitacaoTable,
+  SolicitacaoViagemDetalhe,
 };

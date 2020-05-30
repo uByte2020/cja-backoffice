@@ -2,22 +2,46 @@
   <div>
     <form novalidate class="md-layout" @submit.prevent>
       <div class="md-layout md-gutter">
-        <div class="md-layout-item md-small-size-100 md-size-50" :class="getValidationClass('dataPartida')">
+        <div
+          class="md-layout-item md-small-size-100 md-size-50"
+          :class="getValidationClass('dataPartida')"
+        >
           <label for="data-partida" style="margin-bottom: 0!important;">Data de Partida</label>
-          <md-datepicker name="data-partida" id="data-partida" v-model="seguroViagem.dataPartida" :disabled="sending" />
+          <md-datepicker
+            name="data-partida"
+            id="data-partida"
+            v-model="seguroViagem.dataPartida"
+            md-immediately
+            :md-disabled-dates="disabledDatePartida"
+          />
           <span class="md-error" v-if="!$v.seguroViagem.dataPartida.required">Campo Obrigatório!</span>
         </div>
 
-        <div class="md-layout-item md-small-size-100 md-size-50" :class="getValidationClass('dataVolta')">
+        <div
+          class="md-layout-item md-small-size-100 md-size-50"
+          :class="getValidationClass('dataVolta')"
+        >
           <label for="data-volta" style="margin-bottom: 0!important;">Data de Volta</label>
-          <md-datepicker name="data-volta" id="data-volta" v-model="seguroViagem.dataVolta" :disabled="sending" />
+          <md-datepicker
+            name="data-volta"
+            id="data-volta"
+            v-model="seguroViagem.dataVolta"
+            md-immediately
+            :md-disabled-dates="disabledDateVolta()"
+          />
           <span class="md-error" v-if="!$v.seguroViagem.dataVolta.required">Campo Obrigatório!</span>
         </div>
 
         <div class="md-layout-item md-small-size-100 md-size-33">
           <md-field :class="getValidationClass('plano')">
             <label for="plano">Plano</label>
-            <md-select name="plano" id="plano" v-model="seguroViagem.plano" md-dense :disabled="sending">
+            <md-select
+              name="plano"
+              id="plano"
+              v-model="seguroViagem.plano"
+              md-dense
+              :disabled="sending"
+            >
               <md-option v-for="plano in getPlanos" :key="plano" :value="plano">{{ plano }}</md-option>
             </md-select>
             <span class="md-error">Campo Obrigatório!</span>
@@ -41,16 +65,25 @@
         <div class="md-layout-item md-small-size-100 md-size-33">
           <md-field>
             <label for="documentos">BI ou Passaport</label>
-            <md-file v-model="seguroViagem.documentos" name="documentos" id="documentos" :disabled="sending" multiple />
+            <md-file
+              v-model="documentos"
+              name="documentos"
+              id="documentos"
+              :disabled="sending"
+              multiple
+              @change="setDocs"
+            />
           </md-field>
         </div>
       </div>
 
       <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
     </form>
-    <md-button @click="validateSeguroViagem" class="md-primary" :disabled="sending">Continuar</md-button>
+    <md-button
+      @click="validateSeguroViagem"
+      class="md-raised md-success"
+      :disabled="sending"
+    >Continuar</md-button>
   </div>
 </template>
 
@@ -77,13 +110,12 @@ export default {
         plano: null,
         pessoas: 1,
         dataPartida: format(now, dateFormat),
-        dataVolta: format(now, dateFormat),
-        documentos: null,
-        seguro: null,
+        dataVolta: null,
       },
+      documentos: null,
+      docsIdentificacaos: null,
       userSaved: false,
       sending: false,
-      lastUser: null,
     };
   },
   validations: {
@@ -100,12 +132,23 @@ export default {
       dataVolta: {
         required,
       },
-      documentos: {
-        required,
-      },
     },
   },
   methods: {
+    setDocs() {
+      this.docsIdentificacaos = this.documentos.target.files[0];
+    },
+    disabledDatePartida: (date) => {
+      const dt = Date.now();
+      return dt >= date;
+    },
+    disabledDateVolta() {
+      const dataPartida = this.seguroViagem.dataPartida;
+      return (date) => {
+        const dt = new Date(dataPartida);
+        return dt >= date; //>= date;
+      };
+    },
     getValidationClass(fieldName) {
       const field = this.$v.seguroViagem[fieldName];
 
@@ -115,14 +158,6 @@ export default {
         };
       }
     },
-    clearForm() {
-      this.$v.$reset();
-      this.seguroViagem.dataPartida = null;
-      this.seguroViagem.dataVolta = null;
-      this.seguroViagem.pessoas = null;
-      this.seguroViagem.plano = null;
-      this.seguroViagem.documentos = null;
-    },
     saveSeguroViagem() {
       this.sending = true;
       this.seguroViagem.seguradora = this.seguradora.codigoSeguradora;
@@ -130,28 +165,28 @@ export default {
       (async () => {
         try {
           await this.$store.dispatch('simularSeguroViagem', this.seguroViagem);
-          this.$emit('is-valid', { id: 'second', index: 'third', seguroViagem: this.seguroViagem });
+          this.$emit('is-valid', {
+            id: 'second',
+            index: 'third',
+            seguroViagem: this.seguroViagem,
+            documentos: this.docsIdentificacaos,
+          });
+          this.sending = false;
         } catch (err) {
+          this.sending = false;
           this.notifyVue(status.WARNING, err.message);
         }
-        this.sending = false;
       })();
-      // this.userSaved = true;
-      // this.clearForm();
     },
     validateSeguroViagem() {
-      // this.$v.$touch();
+      this.$v.$touch();
 
-      // if (!this.$v.$invalid) {
-      this.saveSeguroViagem();
-      // };
+      if (!this.$v.$invalid) {
+        this.saveSeguroViagem();
+      }
     },
-    formateDate(date, format) {},
   },
   computed: {
-    dateFormat() {
-      return this.$material.locale.dateFormat || 'yyyy-MM-dd';
-    },
     getPlanos() {
       return this.$store.getters.getPlanos;
     },

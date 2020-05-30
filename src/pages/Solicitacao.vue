@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { SolicitacaoTable } from '@/components';
+import { SolicitacaoTable } from '@/pages';
 
 export default {
   components: {

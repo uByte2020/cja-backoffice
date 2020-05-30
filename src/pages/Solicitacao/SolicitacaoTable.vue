@@ -23,12 +23,12 @@
         <md-table-cell md-label="Preço">{{ item.price }}</md-table-cell>
         <md-table-cell md-label="Data Solicitada">{{ getData(item.seguro.createdAt) }}</md-table-cell>
         <md-table-cell md-label="Caducidade">{{ getData(item.validAt) }}</md-table-cell>
-        <md-table-cell md-label="Docs">Ver Docs</md-table-cell>
+        <!-- <md-table-cell md-label="Docs">Ver Docs</md-table-cell> -->
         <md-table-cell md-label="Estado">{{ item.estado.estado }}</md-table-cell>
-        <md-table-cell md-label="Opções">
-          <md-button class="md-just-icon md-simple md-primary">
-            <md-icon>edit</md-icon>
-            <md-tooltip md-direction="top">Edit</md-tooltip>
+        <md-table-cell md-label="Detalhes">
+          <md-button @click="callSeguroDetalhe(item)" class="md-just-icon md-simple md-primary">
+            <md-icon>visibility</md-icon>
+            <md-tooltip md-direction="top">Ver Detalhes</md-tooltip>
           </md-button>
         </md-table-cell>
       </md-table-row>
@@ -81,6 +81,10 @@ export default {
     },
     fecthUsers() {
       this.searched = this.solicitacoes;
+    },
+    callSeguroDetalhe(solicitacao) {
+      this.$store.dispatch('solicitacaoStore/setSolicitacao', solicitacao);
+      this.$router.push({ name: 'solicitacoes-detalhe', params: { solicitacaoId: solicitacao._id } });
     },
   },
   mounted() {

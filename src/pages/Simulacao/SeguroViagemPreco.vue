@@ -10,15 +10,24 @@
             <md-table-head>Preço</md-table-head>
           </md-table-row>
 
-          <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single" md-auto-select>
+          <md-table-row
+            slot="md-table-row"
+            slot-scope="{ item }"
+            md-selectable="single"
+            md-auto-select
+          >
             <md-table-cell>{{ item.key }}</md-table-cell>
             <md-table-cell>{{ getKeyDesc(item.key) }}</md-table-cell>
-            <md-table-cell> {{ item.value }} AKZ </md-table-cell>
+            <md-table-cell>{{ item.value }} AKZ</md-table-cell>
           </md-table-row>
         </md-table>
       </div>
       <md-dialog-actions>
-        <md-button class="md-primary" @click="hideDialog">Continuar</md-button>
+        <md-button
+          class="md-raised md-success"
+          @click="hideDialog"
+          :disabled="isAvailable"
+        >Continuar</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -39,7 +48,6 @@ export default {
   }),
   methods: {
     onSelected(item) {
-      console.log(item);
       this.selected = item;
     },
     hideDialog() {
@@ -49,6 +57,11 @@ export default {
       if (key === 'cinco') return '5.000.000';
       else if (key === 'dez') return '10.000.000';
       else return '15.000.000';
+    },
+  },
+  computed: {
+    isAvailable() {
+      return !this.selected;
     },
   },
 };

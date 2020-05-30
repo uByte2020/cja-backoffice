@@ -9,29 +9,36 @@
       <div class="md-layout-item md-medium-size-100 md-size-90">
         <div id="sv-stepers">
           <md-steppers :md-active-step.sync="active" md-linear>
-            <md-step id="first" md-label="First Step" md-description="Optional" :md-done.sync="first">
+            <md-step
+              id="first"
+              md-label="Seguradora e Modalidade"
+              md-description="Obrigatório"
+              :md-done.sync="first"
+            >
               <seguradora-modalidade
                 :seguradoras="getSeguradoras"
-                @update-seg-mod="setSeguradoraModalidade"
+                @is-valid="setSeguradoraModalidade"
+                @error="setError"
               ></seguradora-modalidade>
-              <md-button class="md-raised md-primary" @click="setDone({ id: 'first', index: 'second' })"
-                >Continue</md-button
-              >
             </md-step>
 
-            <md-step id="second" md-label="Second Step" :md-error="secondStepError" :md-done.sync="second">
+            <md-step
+              id="second"
+              md-label="Simulação"
+              :md-error="secondStepError"
+              :md-done.sync="second"
+            >
               <seguro-viagem
-                :seguradora="seguradora"
-                :modalidade="modalidade"
+                :seguradora="seguro.seguradora"
+                :modalidade="seguro.modalidade"
                 @error="setError()"
                 @is-valid="showModal"
               ></seguro-viagem>
-              <!-- <md-button class="md-raised md-primary" @error="setError()">Set error!</md-button> -->
             </md-step>
 
-            <md-step id="third" md-label="Third Step" :md-done.sync="third">
-              <simulacao-result :seguro="seguro"></simulacao-result>
-              <md-button class="md-raised md-primary" @click="setDone({ id: 'third' })">Done</md-button>
+            <md-step id="third" md-label="Resultado" :md-done.sync="third">
+              <simulacao-result :seguro="seguro" @update-comprovativo="setComprovativos"></simulacao-result>
+              <md-button class="md-raised md-success" @click="solicitarSeguro()">Solicitar</md-button>
             </md-step>
           </md-steppers>
         </div>
@@ -52,22 +59,22 @@ export default {
     second: false,
     third: false,
     secondStepError: null,
-    modalidade: null,
-    seguradora: null,
     seguro: {
-      modalidade: null,
-      seguradora: null,
+      modalidade: {},
+      seguradora: {},
       price: null,
       simulacao: null,
       comprovativos: null,
+      docIdentificacaos: null,
     },
     lastId: null,
     lastIndex: null,
     seguroViagem: {},
   }),
   methods: {
-    showModal({ id, index, seguroViagem }) {
+    showModal({ id, index, seguroViagem, documentos }) {
       this.seguroViagem = seguroViagem;
+      this.seguro.docIdentificacaos = documentos;
       this.lastId = id;
       this.lastIndex = index;
       this.showDialog = true;
@@ -86,14 +93,62 @@ export default {
         this.active = index;
       }
     },
-    setError() {
-      this.secondStepError = 'This is an error!';
+    setError({ message }) {
+      this.secondStepError = message;
     },
-    setSeguradoraModalidade({ seguradora, modalidade }) {
-      this.modalidade = modalidade;
-      this.seguradora = seguradora;
+    setSeguradoraModalidade({ id, index, seguradora, modalidade }) {
       this.seguro.modalidade = modalidade;
       this.seguro.seguradora = seguradora;
+      this.setDone({ id: id, index: index });
+    },
+    setComprovativos({ comprovativos }) {
+      this.seguro.comprovativos = comprovativos;
+    },
+    async solicitarSeguro() {
+      const seguro = new FormData();
+      const solicitacao = {};
+
+      seguro.append('tipo', this.getUser.role.perfil);
+      seguro.append('modalidade', this.seguro.modalidade._id);
+      seguro.append('seguradora', this.seguro.seguradora._id);
+      seguro.append('price', this.seguro.price);
+      if (this.seguro.comprovativos !== null) seguro.append('comprovativos', this.seguro.comprovativos);
+      if (this.seguro.docIdentificacaos) seguro.append('docIdentificacaos', this.seguro.docIdentificacaos);
+
+      try {
+        const seguroResponse = await this.$store.dispatch('solicitarSeguro', seguro);
+        await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
+        await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
+        this.fetchSolicitacoes();
+        this.$router.push('solicitacoes');
+      } catch (err) {
+        this.notifyVue(status.DANGER, err.message);
+      }
+    },
+    async solicitarSeguroViagem(seguroId) {
+      try {
+        console.log(seguroId);
+        this.seguroViagem.seguro = seguroId;
+        const viagemResponse = await this.$store.dispatch('solicitarSeguroViagem', this.seguroViagem);
+        console.log(viagemResponse);
+      } catch (err) {
+        console.log(err);
+        this.notifyVue(status.DANGER, err.message);
+      }
+    },
+    async solicitar(solicitacao) {
+      try {
+        const solResponse = await this.$store.dispatch('solicitar', solicitacao);
+      } catch (err) {
+        this.notifyVue(status.DANGER, err.message);
+      }
+    },
+    async fetchSolicitacoes() {
+      try {
+        await this.$store.dispatch('solicitacaoStore/getSolicitacoes');
+      } catch (err) {
+        this.notifyVue(status.DANGER, err.message);
+      }
     },
   },
   computed: {
@@ -102,6 +157,9 @@ export default {
     },
     getSimulacaoViagem() {
       return this.$store.getters.getSimulacaoViagem;
+    },
+    getUser() {
+      return this.$store.getters['userStore/getUser'];
     },
   },
 };

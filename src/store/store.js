@@ -17,6 +17,7 @@ export default new Vuex.Store({
     seguradoras: [],
     planos: [],
     simulacaoViagem: [],
+    seguro: {},
     response: null,
   }),
   mutations: {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     setSimulacaoViagem: (state, simulacaoViagem) => {
       state.simulacaoViagem = simulacaoViagem;
     },
+    setSeguro: (state, seguro) => {
+      state.seguro = seguro;
+    },
   },
   actions: {
     getPerfils: async (context) => {
@@ -58,8 +62,63 @@ export default new Vuex.Store({
     },
     simularSeguroViagem: async (context, seguro) => {
       const result = await axios.post('http://127.0.0.1:3000/api/v1/seguros/viagens/simular', seguro);
-      console.log(result.data.data.precos);
       if (result.data.status === status.SUCCESS) context.commit('setSimulacaoViagem', result.data.data.precos);
+    },
+    updateSeguro: async (context, seguro) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`http://127.0.0.1:3000/api/v1/seguros/${seguro.get('_id')}`, seguro)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
+    solicitarSeguro: async (context, seguro) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://127.0.0.1:3000/api/v1/seguros', seguro)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
+    solicitarSeguroViagem: async (context, seguroViagem) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://127.0.0.1:3000/api/v1/seguros/viagens', seguroViagem)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
+    solicitar: async (context, solicitacao) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('http://127.0.0.1:3000/api/v1/solicitacoes', solicitacao)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
     },
   },
   getters: {

@@ -88,20 +88,21 @@ const userStore = {
       });
     },
     getUsers: (context) => {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('http://127.0.0.1:3000/api/v1/users')
-          .then((response) => {
-            context.commit('setUsers', response.data.data.docs);
-            context.commit('setResponse', { status: response.data.status }, { root: true });
-            resolve(response.data);
-          })
-          .catch((error) => {
-            const err = error.response.data;
-            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
-            reject(err);
-          });
-      });
+      if (context.state.user.role.perfilCode <= 1)
+        return new Promise((resolve, reject) => {
+          axios
+            .get('http://127.0.0.1:3000/api/v1/users')
+            .then((response) => {
+              context.commit('setUsers', response.data.data.docs);
+              context.commit('setResponse', { status: response.data.status }, { root: true });
+              resolve(response.data);
+            })
+            .catch((error) => {
+              const err = error.response.data;
+              context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+              reject(err);
+            });
+        });
     },
     updateMe: (context, user) => {
       return new Promise((resolve, reject) => {
@@ -121,7 +122,6 @@ const userStore = {
       });
     },
     updateUser: (context, user) => {
-      console.log(user);
       return new Promise((resolve, reject) => {
         axios
           .patch(`http://127.0.0.1:3000/api/v1/users/${user._id}`, user)
@@ -158,6 +158,12 @@ const userStore = {
     },
     countClientes: (state) => {
       return state.users.filter((user) => user.role.perfilCode >= 2).length;
+    },
+    getUserAuthPerfilCode: (state) => {
+      return state.user.role.perfilCode;
+    },
+    restrictTo: (state) => (...role) => {
+      return role.includes(state.user.role.perfilCode);
     },
   },
 };

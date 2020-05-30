@@ -11,7 +11,7 @@
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/table">
+      <sidebar-link to="/solicitacoes">
         <md-icon>notifications</md-icon>
         <p>Solicitações</p>
       </sidebar-link>

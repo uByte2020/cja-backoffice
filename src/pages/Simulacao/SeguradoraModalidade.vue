@@ -27,6 +27,7 @@
             @md-selected="setModalidade()"
             name="modalidade"
             id="modalidade"
+            :disabled="isModalidadeAvailable"
           >
             <md-option
               v-for="modalidade in modalidades"
@@ -37,6 +38,7 @@
         </md-field>
       </div>
     </div>
+    <md-button class="md-raised md-success" @click="setDone()">Continue</md-button>
   </div>
 </template>
 
@@ -56,16 +58,27 @@ export default {
     modalidades: [],
     modalidade: null,
     seguradora: null,
+    isModalidadeAvailable: true,
   }),
   methods: {
     setSeguradora() {
       this.modalidadeId = '';
       this.seguradora = this.seguradoras.find((seg) => seg._id === this.seguradoraId);
       this.modalidades = this.seguradora.modalidades.filter((mod) => mod.isActive);
+      if (this.modalidades.length > 0) this.isModalidadeAvailable = false;
     },
     setModalidade() {
       this.modalidade = this.modalidades.find((mod) => mod._id === this.modalidadeId);
-      this.$emit('update-seg-mod', { seguradora: this.seguradora, modalidade: this.modalidade });
+    },
+    setDone() {
+      if (this.seguradora && this.modalidade)
+        this.$emit('is-valid', {
+          id: 'first',
+          index: 'second',
+          seguradora: this.seguradora,
+          modalidade: this.modalidade,
+        });
+      else this.$emit('error', { message: 'Campos não preenchidos' });
     },
   },
   computed: {

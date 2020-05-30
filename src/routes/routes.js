@@ -12,6 +12,7 @@ import Login from '@/pages/Login.vue';
 import SignUp from '@/pages/SignUp.vue';
 import Users from '@/pages/Users.vue';
 import Simulacao from '@/pages/Simulacao.vue';
+import SolicitacaoDetalhe from '@/pages/SolicitacaoDetalhe.vue';
 
 const routes = [
   {
@@ -46,41 +47,19 @@ const routes = [
       },
       {
         path: 'simular-seguro',
-        name: 'simular-seguro',
+        name: 'Simular Seguro',
         component: Simulacao,
       },
       {
-        path: 'table',
-        name: 'Table List',
+        path: 'solicitacoes',
+        name: 'Solicitações',
         component: Solicitacao,
       },
       {
-        path: 'typography',
-        name: 'Typography',
-        component: Typography,
-      },
-      {
-        path: 'icons',
-        name: 'Icons',
-        component: Icons,
-      },
-      {
-        path: 'maps',
-        name: 'Maps',
-        meta: {
-          hideFooter: true,
-        },
-        component: Maps,
-      },
-      {
-        path: 'notifications',
-        name: 'Notifications',
-        component: Notifications,
-      },
-      {
-        path: 'upgrade',
-        name: 'Upgrade to PRO',
-        component: UpgradeToPRO,
+        path: 'solicitacoes/:solicitacaoId',
+        name: 'solicitacoes-detalhe',
+        component: SolicitacaoDetalhe,
+        props: true,
       },
     ],
   },
