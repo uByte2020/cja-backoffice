@@ -1,4 +1,5 @@
 import status from './../../utils/statusEnum';
+import DocsType from './../../utils/docsType';
 
 const userStore = {
   namespaced: true,
@@ -54,6 +55,16 @@ const userStore = {
     },
     getSolicitacao: (state) => {
       return state.solicitacao;
+    },
+    getFileURL: (state) => (docType) => {
+      switch (docType) {
+        case DocsType.APOLICE:
+          return `http://localhost:3000/files/seguros/apolice/`;
+        case DocsType.COMPROVATIVO:
+          return `http://localhost:3000/files/seguros/comprovativos/`;
+        case DocsType.DOCIDENTICICACAO:
+          return `http://localhost:3000/files/seguros/docIdentificacaos/`;
+      }
     },
   },
 };

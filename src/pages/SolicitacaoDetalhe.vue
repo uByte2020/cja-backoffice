@@ -1,5 +1,11 @@
 <template>
   <div class="content">
+    <SolicitacaoDetalheFiles
+      @hide-dialog="hideDialog()"
+      :files="files"
+      :name="nameFile"
+      :show-dialog="showDialog"
+    ></SolicitacaoDetalheFiles>
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-size-100">
         <md-card>
@@ -75,10 +81,15 @@
                     multiple
                   />
                 </md-field>
+
                 <md-button
                   v-show="hasFiles(solicitacao.seguro.docIdentificacaos)"
                   class="md-raised md-success"
-                >Download Docs de Identificação</md-button>
+                  @click="callDialog(
+                    solicitacao.seguro.docIdentificacaos, 
+                    'Docs de Identificação', 
+                    getFileURL(docsType.DOCIDENTICICACAO))"
+                >Ver Docs de Identificação</md-button>
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field v-show="!hasFiles(solicitacao.seguro.comprovativos)">
@@ -91,10 +102,15 @@
                     multiple
                   />
                 </md-field>
+
                 <md-button
                   v-show="hasFiles(solicitacao.seguro.comprovativos)"
                   class="md-raised md-success"
-                >Download Comprovativos</md-button>
+                  @click="callDialog(
+                    solicitacao.seguro.comprovativos, 
+                    'Comprovativos', 
+                    getFileURL(docsType.COMPROVATIVO))"
+                >Ver Comprovativos</md-button>
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field v-show="!solicitacao.seguro.apolice && restrictTo(0, 1)">
@@ -107,10 +123,15 @@
                     multiple
                   />
                 </md-field>
+
                 <md-button
-                  class="md-raised md-success"
                   v-show="solicitacao.seguro.apolice"
-                >Download Aplice</md-button>
+                  class="md-raised md-success"
+                  @click="callDialog(
+                    solicitacao.seguro.apolice, 
+                    'Apólice de Seguro', 
+                    getFileURL(docsType.APOLICE))"
+                >Ver Aplice de Seguro</md-button>
               </div>
             </div>
             <div class="md-layout-item md-size-100 text-right">
@@ -124,11 +145,12 @@
 </template>
 
 <script>
-import { SolicitacaoViagemDetalhe } from '@/pages';
+import { SolicitacaoViagemDetalhe, SolicitacaoDetalheFiles } from '@/pages';
+import DocsType from './../utils/docsType';
 
 export default {
   name: 'simulacao-detalhe',
-  components: { SolicitacaoViagemDetalhe },
+  components: { SolicitacaoViagemDetalhe, SolicitacaoDetalheFiles },
   props: ['solicitacaoId'],
   data() {
     return {
@@ -171,6 +193,10 @@ export default {
       docIdentificacaos: null,
       comprovativos: null,
       apolice: null,
+      files: [],
+      nameFile: '',
+      showDialog: false,
+      docsType: DocsType,
     };
   },
   mounted() {
@@ -181,21 +207,47 @@ export default {
       if (Array.isArray(file)) return file.length > 0;
       return false;
     },
+    callDialog(files, name, url) {
+      files = Array.isArray(files) ? files : [files];
+
+      this.files = files.map((el) => {
+        return { url: `${url}${el}`, name: el };
+      });
+      this.nameFile = name;
+      this.showDialog = true;
+    },
+    hideDialog() {
+      this.showDialog = false;
+    },
     setComprovativos() {
-      this.seguro.comprovativos = this.comprovativos.target.files[0];
+      this.seguro.comprovativos = this.comprovativos.target.files;
     },
     setDocIdentificacaos() {
-      this.seguro.docIdentificacaos = this.docIdentificacaos.target.files[0];
+      this.seguro.docIdentificacaos = this.docIdentificacaos.target.files;
     },
     setApolice() {
-      this.seguro.apolice = this.apolice.target.files[0];
+      this.seguro.apolice = this.apolice.target.files;
     },
     async update() {
       const seguro = new FormData();
+
       seguro.append('_id', this.solicitacao.seguro._id);
-      if (this.seguro.comprovativos) seguro.append('comprovativos', this.seguro.comprovativos);
-      if (this.seguro.docIdentificacaos) seguro.append('docIdentificacaos', this.seguro.docIdentificacaos);
-      if (this.seguro.apolice) seguro.append('apolice', this.seguro.apolice);
+
+      if (this.seguro.comprovativos) {
+        this.seguro.comprovativos.forEach((element) => {
+          seguro.append('comprovativos', element);
+        });
+      }
+      if (this.seguro.docIdentificacaos) {
+        this.seguro.docIdentificacaos.forEach((element) => {
+          seguro.append('docIdentificacaos', element);
+        });
+      }
+      if (this.seguro.apolice) {
+        this.seguro.apolice.forEach((element) => {
+          seguro.append('apolice', element);
+        });
+      }
 
       try {
         await this.$store.dispatch('updateSeguro', seguro);
@@ -231,6 +283,9 @@ export default {
     },
     restrictTo() {
       return this.$store.getters['userStore/restrictTo'];
+    },
+    getFileURL() {
+      return this.$store.getters['solicitacaoStore/getFileURL'];
     },
   },
 };
