@@ -14,16 +14,24 @@ import Users from '@/pages/Users.vue';
 import Simulacao from '@/pages/Simulacao.vue';
 import SolicitacaoDetalhe from '@/pages/SolicitacaoDetalhe.vue';
 
+import store from './../store/store';
+
 const routes = [
   {
     path: '/signup',
     name: 'signup',
     component: SignUp,
+    meta: {
+      allowAnonymous: true,
+    },
   },
   {
     path: '/login',
     name: 'login',
     component: Login,
+    meta: {
+      allowAnonymous: true,
+    },
   },
   {
     path: '/',
@@ -34,6 +42,13 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: Dashboard,
+        beforeEnter(to, from, next) {
+          if (store.getters['userStore/restrictTo'](0, 1)) {
+            next();
+          } else {
+            next('solicitacoes');
+          }
+        },
       },
       {
         path: 'user',
@@ -44,11 +59,25 @@ const routes = [
         path: 'users',
         name: 'users',
         component: Users,
+        beforeEnter(to, from, next) {
+          if (store.getters['userStore/restrictTo'](0, 1)) {
+            next();
+          } else {
+            next('solicitacoes');
+          }
+        },
       },
       {
         path: 'simular-seguro',
         name: 'Simular Seguro',
         component: Simulacao,
+        beforeEnter(to, from, next) {
+          if (store.getters['userStore/restrictTo'](2, 3)) {
+            next();
+          } else {
+            next('solicitacoes');
+          }
+        },
       },
       {
         path: 'solicitacoes',

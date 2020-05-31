@@ -7,7 +7,7 @@
       :sidebar-background-image="sidebarBackgroundImage"
     >
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/dashboard">
+      <sidebar-link to="/dashboard" v-show="restrictTo(0, 1)">
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link>
@@ -15,11 +15,11 @@
         <md-icon>notifications</md-icon>
         <p>Solicitações</p>
       </sidebar-link>
-      <sidebar-link to="/simular-seguro">
+      <sidebar-link to="/simular-seguro" v-show="restrictTo(2, 3)">
         <md-icon>bubble_chart</md-icon>
         <p>Simulacao</p>
       </sidebar-link>
-      <sidebar-link to="/users">
+      <sidebar-link to="/users" v-show="restrictTo(0)">
         <md-icon>group</md-icon>
         <p>Utilizadores</p>
       </sidebar-link>
@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     this.fetchSolicitacoes();
-    this.fetchUsers();
+    if (this.restrictTo(0, 1)) this.fetchUsers();
     this.fetchSeguradoras();
     this.fetchModalidades();
     this.fetchPlanos();
@@ -116,6 +116,11 @@ export default {
       } catch (err) {
         this.notifyVue(status.WARNING, err.message);
       }
+    },
+  },
+  computed: {
+    restrictTo() {
+      return this.$store.getters['userStore/restrictTo'];
     },
   },
 };

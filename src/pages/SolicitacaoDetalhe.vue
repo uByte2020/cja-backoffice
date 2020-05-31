@@ -11,7 +11,9 @@
         <md-card>
           <md-card-header data-background-color="green">
             <h4 class="title">Detalhes da Solicitação</h4>
-            <p class="category">Solicitação: {{ solicitacao.estado.estado }}</p>
+            <p
+              class="category"
+            >{{ solicitacao.cliente.role.perfil }} - {{ solicitacao.estado.estado }}</p>
           </md-card-header>
           <md-card-content>
             <SolicitacaoViagemDetalhe :seguro-viagem="solicitacao.seguro.seguroViagem"></SolicitacaoViagemDetalhe>
@@ -181,6 +183,7 @@ export default {
         },
         cliente: {
           name: null,
+          role: { perfil: null },
         },
         estado: { estado: null, estadoCode: null },
         validAt: null,

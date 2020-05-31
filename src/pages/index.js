@@ -11,6 +11,8 @@ import SeguroViagem from '../pages/Simulacao/SeguroViagem.vue';
 import SeguradoraModalidade from '../pages/Simulacao/SeguradoraModalidade.vue';
 import SimulacaoResult from '../pages/Simulacao/SimulacaoResult.vue';
 import SeguroViagemPreco from '../pages/Simulacao/SeguroViagemPreco.vue';
+import SeguroParticular from '../pages/SeguroParticular.vue';
+import SeguroEmpresa from '../pages/SeguroEmpresa.vue';
 import SolicitacaoTable from '../pages/Solicitacao/SolicitacaoTable.vue';
 import SolicitacaoDetalheFiles from '../pages/Solicitacao/SolicitacaoDetalheFiles.vue';
 import SolicitacaoViagemDetalhe from '../pages/Solicitacao/SolicitacaoViagemDetalhe.vue';
@@ -28,4 +30,6 @@ export {
   SolicitacaoTable,
   SolicitacaoDetalheFiles,
   SolicitacaoViagemDetalhe,
+  SeguroParticular,
+  SeguroEmpresa,
 };

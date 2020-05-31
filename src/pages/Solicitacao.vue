@@ -23,6 +23,9 @@ export default {
   components: {
     SolicitacaoTable,
   },
+  mounted() {
+    console.log(this.getSolicitacoes);
+  },
   computed: {
     getSolicitacoes() {
       return this.$store.getters['solicitacaoStore/getSolicitacoes'];

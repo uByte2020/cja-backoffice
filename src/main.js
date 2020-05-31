@@ -5,11 +5,10 @@ import VueAxios from 'vue-axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 
-// router setup
-import routes from './routes/routes';
 // store setup
 import store from './store/store';
-
+// router setup
+import routes from './routes/routes';
 // Plugins
 import GlobalComponents from './globalComponents';
 import GlobalDirectives from './globalDirectives';
@@ -45,16 +44,14 @@ router.beforeEach(async (to, from, next) => {
   if (!isAuth) {
     try {
       await store.dispatch('userStore/isLogged');
-      if (to.path === '/login' || to.path === '/bloqued' || to.path === '/signup') {
+      if (to.meta.allowAnonymous) {
         next('/');
       }
     } catch (err) {
-      if (to.path !== '/login' && to.path !== '/signup') next('/login');
+      if (!to.meta.allowAnonymous) next('/login');
     }
   } else {
-    if (1 === 0) {
-      if (to.path !== '/bloqued') next('/bloqued');
-    } else if (to.path === '/login' || to.path === '/bloqued' || to.path === '/signup') {
+    if (to.meta.allowAnonymous) {
       next('/');
     }
   }
