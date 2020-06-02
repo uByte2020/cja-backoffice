@@ -107,8 +107,9 @@ export default {
   },
   methods: {
     async update() {
-      this.user.endereco = this.user.endereco.split(';');
-      this.$emit('update-user', this.user);
+      const user = { ...this.user };
+      user.endereco = this.user.endereco.split(';');
+      this.$emit('update-user', user);
     },
   },
 };

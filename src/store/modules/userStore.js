@@ -42,7 +42,10 @@ const userStore = {
           .get('http://127.0.0.1:3000/api/v1/users/logout')
           .then((response) => {
             context.commit('setUser', null);
+            context.commit('setUsers', []);
             context.commit('setIsAuth', false);
+            commit('solicitacaoStore/freeModule', null, { root: true });
+            commit('freeStore', null, { root: true });
             context.commit('setResponse', { status: response.data.status }, { root: true });
             resolve(response.data);
           })
@@ -105,6 +108,7 @@ const userStore = {
         });
     },
     updateMe: (context, user) => {
+      console.log(user);
       return new Promise((resolve, reject) => {
         axios
           .patch('http://127.0.0.1:3000/api/v1/users/updateMe', user)
@@ -148,7 +152,7 @@ const userStore = {
       return state.isAuth;
     },
     getUsers: (state) => {
-      return state.users;
+      return state.users.filter((user) => user.role.perfilCode !== 0);
     },
     getMediadores: (state) => {
       return state.users.filter((user) => user.role.perfilCode === 1);

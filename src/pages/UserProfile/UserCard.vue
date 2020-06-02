@@ -45,7 +45,7 @@ export default {
       const files = event.currentTarget.files;
       const user = new FormData();
       user.append('photo', files[0]);
-      this.$emit('update-user', this.user);
+      this.$emit('update-user', user);
     },
   },
 };

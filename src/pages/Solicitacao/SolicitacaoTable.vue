@@ -87,7 +87,7 @@ export default {
       this.$router.push({ name: 'solicitacoes-detalhe', params: { solicitacaoId: solicitacao._id } });
     },
   },
-  mounted() {
+  created() {
     this.fecthUsers();
   },
 };

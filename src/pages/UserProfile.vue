@@ -21,11 +21,26 @@ export default {
   },
   methods: {
     async updateUser(user) {
+      const loader = this.$loading.show({
+        color: '#4caf50',
+        opacity: 0.3,
+      });
       try {
-        let response = await this.$store.dispatch('userStore/updateMe', this.user);
+        let response = await this.$store.dispatch('userStore/updateMe', user);
+        loader.hide();
       } catch (err) {
+        loader.hide();
         this.notifyVue(status.DANGER, err.message);
       }
+    },
+    notifyVue(status, message) {
+      this.$notify({
+        message: message,
+        icon: 'add_alert',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: status,
+      });
     },
   },
 };

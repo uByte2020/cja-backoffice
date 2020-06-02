@@ -82,6 +82,12 @@
               >The first name is required</span>
             </md-field>
           </div>
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <p>
+              Já tem uma conta?
+              <router-link to="/login">Entre Aqui!</router-link>
+            </p>
+          </div>
           <div class="md-layout-item md-size-100 text-center">
             <md-card-actions style="justify-content: center!important;">
               <md-button type="submit" class="md-raised md-success" :disabled="sending">Registrar</md-button>

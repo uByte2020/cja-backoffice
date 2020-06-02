@@ -4,21 +4,14 @@
       <md-dialog-title>Preçario</md-dialog-title>
       <div>
         <md-table v-model="simulacaoViagem" @md-selected="onSelected">
-          <md-table-row>
-            <md-table-head>ID</md-table-head>
-            <md-table-head>Plano</md-table-head>
-            <md-table-head>Preço</md-table-head>
-          </md-table-row>
-
           <md-table-row
             slot="md-table-row"
             slot-scope="{ item }"
             md-selectable="single"
             md-auto-select
           >
-            <md-table-cell>{{ item.key }}</md-table-cell>
-            <md-table-cell>{{ getKeyDesc(item.key) }}</md-table-cell>
-            <md-table-cell>{{ item.value }} AKZ</md-table-cell>
+            <md-table-cell md-label="Plano">{{ getKeyDesc(item.key) }}</md-table-cell>
+            <md-table-cell md-label="Preço">{{ item.value }} AKZ</md-table-cell>
           </md-table-row>
         </md-table>
       </div>

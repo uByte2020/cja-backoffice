@@ -23,8 +23,24 @@ export default {
   components: {
     SolicitacaoTable,
   },
-  mounted() {
-    console.log(this.getSolicitacoes);
+  methods: {
+    async fetchSolicitacoes() {
+      try {
+        await this.$store.dispatch('solicitacaoStore/getSolicitacoes');
+      } catch (err) {
+        this.notifyVue(status.DANGER, err.message);
+      }
+    },
+  },
+  created() {
+    const loader = this.$loading.show({
+      color: '#4caf50',
+      opacity: 0.3,
+    });
+    (async () => {
+      await this.fetchSolicitacoes();
+      loader.hide();
+    })();
   },
   computed: {
     getSolicitacoes() {

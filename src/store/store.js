@@ -42,6 +42,15 @@ export default new Vuex.Store({
     setSeguro: (state, seguro) => {
       state.seguro = seguro;
     },
+    freeStore: (state, empty) => {
+      state.perfils = [];
+      state.modalidades = [];
+      state.seguradoras = [];
+      state.response = null;
+      state.planos = [];
+      state.simulacaoViagem = [];
+      state.seguro = {};
+    },
   },
   actions: {
     getPerfils: async (context) => {
@@ -110,6 +119,20 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios
           .post('http://127.0.0.1:3000/api/v1/solicitacoes', solicitacao)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
+            reject(err);
+          });
+      });
+    },
+    updateSolicitacao: async (context, { _id, estado }) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`http://127.0.0.1:3000/api/v1/solicitacoes/${_id}`, { estado: estado })
           .then((response) => {
             resolve(response.data);
           })

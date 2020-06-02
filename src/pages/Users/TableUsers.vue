@@ -20,10 +20,9 @@
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
         <md-table-cell md-label="Telemovel" md-sort-by="telemovel">{{ item.telemovel }}</md-table-cell>
         <md-table-cell md-label="Perfil" md-sort-by="role.perfilCode">{{ item.role.perfil }}</md-table-cell>
-        <md-table-cell md-label="Opções">
+        <!-- <md-table-cell md-label="Opções">
           <md-switch :value="item.isBloqued" @change="changeBloqState(item)"></md-switch>
-          <!-- <toggle-button :value="item.isBloqued" @change="changeBloqState(item)" /> -->
-        </md-table-cell>
+          </md-table-cell> -->
       </md-table-row>
     </md-table>
   </div>
@@ -61,10 +60,10 @@ export default {
       this.searched = searchByName(this.users, this.search);
     },
     changeBloqState(item) {
-      item.isBloqued = !item.isBloqued;
+      // item.isBloqued = !item.isBloqued;
     },
     fecthUsers() {
-      this.searched = this.users;
+      this.searched = [...this.users];
     },
   },
   mounted() {

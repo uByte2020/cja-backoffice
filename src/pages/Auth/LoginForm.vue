@@ -20,6 +20,12 @@
               <md-input v-model="password" type="password"></md-input>
             </md-field>
           </div>
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <p>
+              Não tem uma conta?
+              <router-link to="/signup">Registra-se já!</router-link>
+            </p>
+          </div>
           <div class="md-layout-item md-size-100 text-center">
             <md-button class="md-raised md-success" @click="login">Entrar</md-button>
           </div>

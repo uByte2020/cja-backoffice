@@ -5,12 +5,7 @@
         <md-dialog-title>{{ name }}</md-dialog-title>
         <div>
           <md-table v-model="files">
-            <md-table-row
-              slot="md-table-row"
-              @click="downloadItem(item)"
-              slot-scope="{ item }"
-              md-auto-select
-            >
+            <md-table-row slot="md-table-row" @click="downloadItem(item)" slot-scope="{ item }" md-auto-select>
               <md-table-cell md-label="Ficheiro">{{ item.name }}</md-table-cell>
               <md-table-cell md-label="Opção">Download</md-table-cell>
             </md-table-row>

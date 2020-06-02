@@ -14,6 +14,10 @@ const userStore = {
     setSolicitacao: (state, solicitacao) => {
       state.solicitacao = solicitacao;
     },
+    freeModule: (state, empty) => {
+      state.solicitacao = {};
+      state.solicitacoes = [];
+    },
   },
   actions: {
     setSolicitacao: (context, solicitacao) => {
@@ -64,6 +68,8 @@ const userStore = {
           return `http://localhost:3000/files/seguros/comprovativos/`;
         case DocsType.DOCIDENTICICACAO:
           return `http://localhost:3000/files/seguros/docIdentificacaos/`;
+        case DocsType.SIMULACAO:
+          return `http://localhost:3000/files/seguros/simulacao/`;
       }
     },
   },

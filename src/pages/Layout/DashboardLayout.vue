@@ -27,26 +27,10 @@
         <md-icon>person</md-icon>
         <p>Perfil</p>
       </sidebar-link>
-
-      <!-- 
-      
-      <sidebar-link to="/maps">
-        <md-icon>location_on</md-icon>
-        <p>Maps</p>
-      </sidebar-link>
-      <sidebar-link to="/notifications">
-        <md-icon>notifications</md-icon>
-        <p>Notifications</p>
-      </sidebar-link>-->
-      <!-- <sidebar-link to="/upgrade" class="active-pro">
-        <md-icon>unarchive</md-icon>
-        <p>Upgrade to PRO</p>
-      </sidebar-link>-->
     </side-bar>
 
     <div class="main-panel">
       <top-navbar></top-navbar>
-      <!-- <fixed-plugin :color.sync="sidebarBackground" :image.sync="sidebarBackgroundImage"></fixed-plugin> -->
       <dashboard-content></dashboard-content>
       <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
@@ -66,7 +50,6 @@ export default {
     DashboardContent,
     ContentFooter,
     MobileMenu,
-    // FixedPlugin,
   },
   data() {
     return {
@@ -75,11 +58,18 @@ export default {
     };
   },
   mounted() {
-    this.fetchSolicitacoes();
-    if (this.restrictTo(0, 1)) this.fetchUsers();
-    this.fetchSeguradoras();
-    this.fetchModalidades();
-    this.fetchPlanos();
+    const loader = this.$loading.show({
+      color: '#4caf50',
+      opacity: 0.3,
+    });
+    (async () => {
+      await this.fetchSolicitacoes();
+      if (this.restrictTo(0, 1)) await this.fetchUsers();
+      await this.fetchSeguradoras();
+      await this.fetchModalidades();
+      await this.fetchPlanos();
+      loader.hide();
+    })();
   },
   methods: {
     async fetchSolicitacoes() {
