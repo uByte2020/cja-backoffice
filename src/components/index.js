@@ -7,5 +7,6 @@ import StatsCard from './Cards/StatsCard.vue';
 import NavTabsTable from './Tables/NavTabsTable.vue';
 import OrderedTable from './Tables/OrderedTable.vue';
 import SolicitacaoTable from './Tables/SolicitacaoTable.vue';
+import Pagination from './Pagination.vue';
 
-export { ChartCard, NavTabsCard, StatsCard, NavTabsTable, OrderedTable, SolicitacaoTable };
+export { ChartCard, NavTabsCard, StatsCard, NavTabsTable, OrderedTable, SolicitacaoTable, Pagination };

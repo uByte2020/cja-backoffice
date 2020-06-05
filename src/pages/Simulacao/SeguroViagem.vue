@@ -164,7 +164,7 @@ export default {
       this.seguroViagem.modalidade = this.modalidade.modalidade;
       (async () => {
         try {
-          await this.$store.dispatch('simularSeguroViagem', this.seguroViagem);
+          await this.$store.dispatch('seguroViagemStore/simularSeguroViagem', this.seguroViagem);
           this.$emit('is-valid', {
             id: 'second',
             index: 'third',

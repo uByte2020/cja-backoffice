@@ -20,11 +20,18 @@
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
         <md-table-cell md-label="Telemovel" md-sort-by="telemovel">{{ item.telemovel }}</md-table-cell>
         <md-table-cell md-label="Perfil" md-sort-by="role.perfilCode">{{ item.role.perfil }}</md-table-cell>
-        <!-- <md-table-cell md-label="Opções">
-          <md-switch :value="item.isBloqued" @change="changeBloqState(item)"></md-switch>
-          </md-table-cell> -->
+        <md-table-cell md-label="Opções">
+          <md-switch v-model="item.isBloqued" class="md-primary" @change="changeBloqState(item)"></md-switch>
+        </md-table-cell>
       </md-table-row>
     </md-table>
+    <Pagination
+      :total="users.length"
+      :perPage="limit"
+      @input="changePage"
+      type="success"
+      :value="page"
+    ></Pagination>
   </div>
 </template>
 
@@ -40,7 +47,7 @@ const searchByName = (items, term) => {
 
   return items;
 };
-
+import { Pagination } from '@/components';
 import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
@@ -51,8 +58,15 @@ export default {
   data: () => ({
     search: null,
     searched: [],
+    limit: 5,
+    page: 1,
   }),
   methods: {
+    changePage(page) {
+      this.page = page;
+      const skip = (page - 1) * this.limit;
+      this.searched = [...this.users.slice(skip, skip + this.limit)];
+    },
     newUser() {
       window.alert('Noop');
     },
@@ -63,7 +77,7 @@ export default {
       // item.isBloqued = !item.isBloqued;
     },
     fecthUsers() {
-      this.searched = [...this.users];
+      this.changePage(1);
     },
   },
   mounted() {
@@ -71,7 +85,7 @@ export default {
   },
 
   components: {
-    // ToggleButton,
+    Pagination,
   },
 };
 </script>

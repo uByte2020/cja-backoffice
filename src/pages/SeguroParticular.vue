@@ -32,7 +32,12 @@
                       ></seguradora-modalidade>
                     </md-step>
 
-                    <md-step id="second" md-label="Simulação" :md-error="secondStepError" :md-done.sync="second">
+                    <md-step
+                      id="second"
+                      md-label="Simulação"
+                      :md-error="secondStepError"
+                      :md-done.sync="second"
+                    >
                       <seguro-viagem
                         :seguradora="seguro.seguradora"
                         :modalidade="seguro.modalidade"
@@ -130,7 +135,7 @@ export default {
       if (this.seguro.docIdentificacaos) seguro.append('docIdentificacaos', this.seguro.docIdentificacaos);
 
       try {
-        const seguroResponse = await this.$store.dispatch('solicitarSeguro', seguro);
+        const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
         await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
         await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
         this.fetchSolicitacoes();
@@ -145,7 +150,7 @@ export default {
       try {
         console.log(seguroId);
         this.seguroViagem.seguro = seguroId;
-        const viagemResponse = await this.$store.dispatch('solicitarSeguroViagem', this.seguroViagem);
+        const viagemResponse = await this.$store.dispatch('seguroViagemStore/solicitarSeguroViagem', this.seguroViagem);
         console.log(viagemResponse);
       } catch (err) {
         console.log(err);
@@ -181,7 +186,7 @@ export default {
       return this.$store.getters.getSeguradoras;
     },
     getSimulacaoViagem() {
-      return this.$store.getters.getSimulacaoViagem;
+      return this.$store.getters['seguroViagemStore/getSimulacaoViagem'];
     },
     getUser() {
       return this.$store.getters['userStore/getUser'];

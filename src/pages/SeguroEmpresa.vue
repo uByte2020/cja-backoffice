@@ -13,10 +13,21 @@
               <div class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label for="seguradora">Seguradoras*</label>
-                  <md-select v-model="seguradoraId" @md-selected="setSeguradora()" name="seguradora" id="seguradora">
-                    <md-option v-for="seguradora in getSeguradoras" :key="seguradora._id" :value="seguradora._id">{{
+                  <md-select
+                    v-model="seguradoraId"
+                    @md-selected="setSeguradora()"
+                    name="seguradora"
+                    id="seguradora"
+                  >
+                    <md-option
+                      v-for="seguradora in getSeguradoras"
+                      :key="seguradora._id"
+                      :value="seguradora._id"
+                    >
+                      {{
                       seguradora.seguradora
-                    }}</md-option>
+                      }}
+                    </md-option>
                   </md-select>
                 </md-field>
               </div>
@@ -30,9 +41,15 @@
                     id="modalidade"
                     :disabled="isModalidadeAvailable"
                   >
-                    <md-option v-for="modalidade in modalidades" :key="modalidade._id" :value="modalidade._id">{{
+                    <md-option
+                      v-for="modalidade in modalidades"
+                      :key="modalidade._id"
+                      :value="modalidade._id"
+                    >
+                      {{
                       modalidade.modalidade
-                    }}</md-option>
+                      }}
+                    </md-option>
                   </md-select>
                 </md-field>
               </div>
@@ -130,7 +147,7 @@ export default {
       seguro.append('seguradora', this.seguro.seguradora._id);
 
       try {
-        const seguroResponse = await this.$store.dispatch('solicitarSeguro', seguro);
+        const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
         // await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
         await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
         this.fetchSolicitacoes();
@@ -144,7 +161,7 @@ export default {
     async solicitarSeguroViagem(seguroId) {
       try {
         this.seguroViagem.seguro = seguroId;
-        const viagemResponse = await this.$store.dispatch('solicitarSeguroViagem', this.seguroViagem);
+        const viagemResponse = await this.$store.dispatch('seguroViagemStore/solicitarSeguroViagem', this.seguroViagem);
       } catch (err) {
         this.notifyVue(status.DANGER, err.message);
       }
@@ -181,7 +198,7 @@ export default {
       return this.$store.getters.getSeguradoras.filter((seg) => seg.isActive);
     },
     getSimulacaoViagem() {
-      return this.$store.getters.getSimulacaoViagem;
+      return this.$store.getters['seguroViagemStore/getSimulacaoViagem'];
     },
     getUser() {
       return this.$store.getters['userStore/getUser'];

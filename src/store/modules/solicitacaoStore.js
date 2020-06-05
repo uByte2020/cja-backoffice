@@ -30,6 +30,19 @@ const userStore = {
       const result = await axios.get(`http://127.0.0.1:3000/api/v1/solicitacoes/${mySolicitacoes}`);
       if (result.data.status === status.SUCCESS) context.commit('setSolicitacoes', result.data.data.docs);
     },
+    cancelarSolicitacao: (context, solicitacao) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`http://127.0.0.1:3000/api/v1/solicitacoes/cancelar/${solicitacao._id}`, solicitacao)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            const err = error.response.data;
+            reject(err);
+          });
+      });
+    },
     getSolicitacoesById: async (context, solicitacaoId) => {
       return new Promise((resolve, reject) => {
         axios
@@ -46,7 +59,16 @@ const userStore = {
   },
   getters: {
     getSolicitacoes: (state) => {
-      return state.solicitacoes;
+      const solicitacoes = [...state.solicitacoes.filter((el) => [1, 2, 3].includes(el.estado.estadoCode))];
+      return solicitacoes.sort(function(a, b) {
+        if (a.estado.estadoCode === 2) {
+          return -1;
+        }
+        if (b.estado.estadoCode === 2) {
+          return 1;
+        }
+        return a.estado.estadoCode - b.estado.estadoCode;
+      });
     },
     countSolicitacoesPendentes: (state) => {
       return state.solicitacoes.filter((el) => el.estado.estadoCode === 2).length;
