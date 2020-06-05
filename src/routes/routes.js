@@ -8,6 +8,7 @@ import SignUp from '@/pages/SignUp.vue';
 import Users from '@/pages/Users.vue';
 import Simulacao from '@/pages/Simulacao.vue';
 import SolicitacaoDetalhe from '@/pages/SolicitacaoDetalhe.vue';
+import UserDetalhe from '@/pages/UserDetalhe.vue';
 
 import store from './../store/store';
 
@@ -56,6 +57,19 @@ const routes = [
         component: Users,
         beforeEnter(to, from, next) {
           if (store.getters['userStore/restrictTo'](0, 1)) {
+            next();
+          } else {
+            next('solicitacoes');
+          }
+        },
+      },
+      {
+        path: 'users/:userId',
+        name: 'users-detalhe',
+        component: UserDetalhe,
+        props: true,
+        beforeEnter(to, from, next) {
+          if (store.getters['userStore/restrictTo'](0)) {
             next();
           } else {
             next('solicitacoes');

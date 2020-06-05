@@ -2,10 +2,18 @@
   <div class="content">
     <div class="md-layout">
       <div class="md-layout-item md-medium-size-100 md-size-66">
-        <edit-profile-form @update-user="updateUser" data-background-color="green"></edit-profile-form>
+        <edit-profile-form
+          :get-user="getUser"
+          @update-user="updateUser"
+          data-background-color="green"
+        ></edit-profile-form>
       </div>
       <div class="md-layout-item md-medium-size-100 md-size-33">
-        <user-card @update-user="updateUser"></user-card>
+        <user-card
+          :get-user="getUser"
+          :get-profile-photo="getProfilePhoto"
+          @update-user="updateUser"
+        ></user-card>
       </div>
     </div>
   </div>
@@ -41,6 +49,14 @@ export default {
         verticalAlign: 'top',
         type: status,
       });
+    },
+  },
+  computed: {
+    getUser() {
+      return this.$store.getters['userStore/getUser'];
+    },
+    getProfilePhoto() {
+      return this.$store.getters['userStore/getProfilePhoto'];
     },
   },
 };

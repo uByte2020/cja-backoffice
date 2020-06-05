@@ -140,6 +140,21 @@ const userStore = {
           });
       });
     },
+    changeBloqState: (context, user) => {},
+    getUserById: (context, userId) => {
+      if (context.state.user.role.perfilCode <= 1)
+        return new Promise((resolve, reject) => {
+          axios
+            .get(`http://127.0.0.1:3000/api/v1/users/${userId}`)
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              const err = error.response.data;
+              reject(err);
+            });
+        });
+    },
   },
   getters: {
     getUser: (state) => {
@@ -147,6 +162,9 @@ const userStore = {
     },
     getProfilePhoto: (state) => {
       return `http://localhost:3000/img/users/${state.user.photo}`;
+    },
+    getUserImgUrl: (state) => {
+      return `http://localhost:3000/img/users/`;
     },
     getIsAuth: (state) => {
       return state.isAuth;

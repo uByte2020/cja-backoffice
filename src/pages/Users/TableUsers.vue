@@ -21,7 +21,15 @@
         <md-table-cell md-label="Telemovel" md-sort-by="telemovel">{{ item.telemovel }}</md-table-cell>
         <md-table-cell md-label="Perfil" md-sort-by="role.perfilCode">{{ item.role.perfil }}</md-table-cell>
         <md-table-cell md-label="Opções">
-          <md-switch v-model="item.isBloqued" class="md-primary" @change="changeBloqState(item)"></md-switch>
+          <!-- <md-switch :value="item.isBloqued" class="md-primary" @click="changeBloqState(item)"></md-switch> -->
+          <md-button @click="callUserDetalhe(item)" class="md-just-icon md-simple md-success">
+            <md-icon>visibility</md-icon>
+            <md-tooltip md-direction="top">Ver Detalhes</md-tooltip>
+          </md-button>
+          <md-button v-show="item.isBloqued" class="md-just-icon md-simple md-success">
+            <md-icon>lock</md-icon>
+            <md-tooltip md-direction="top">Bloqueado</md-tooltip>
+          </md-button>
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -62,6 +70,9 @@ export default {
     page: 1,
   }),
   methods: {
+    callUserDetalhe(user) {
+      this.$router.push({ name: 'users-detalhe', params: { userId: user._id } });
+    },
     changePage(page) {
       this.page = page;
       const skip = (page - 1) * this.limit;
@@ -74,7 +85,8 @@ export default {
       this.searched = searchByName(this.users, this.search);
     },
     changeBloqState(item) {
-      // item.isBloqued = !item.isBloqued;
+      console.log(item);
+      // this.$store.dispatch('userStore/changeBloqState', item);
     },
     fecthUsers() {
       this.changePage(1);

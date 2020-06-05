@@ -16,7 +16,11 @@
         accept="image/jpeg, image/png, image/jpg"
         ref="fileInput"
       />
-      <md-button class="md-round md-success" @click="$refs.fileInput.click()">Actualizar Foto</md-button>
+      <md-button
+        v-show="isMyProfile"
+        class="md-round md-success"
+        @click="$refs.fileInput.click()"
+      >Actualizar Foto</md-button>
     </md-card-content>
   </md-card>
 </template>
@@ -28,18 +32,17 @@ export default {
       type: String,
       default: require('@/assets/img/faces/marc.jpg'),
     },
+    getUser: Object,
+    getProfilePhoto: String,
+    isMyProfile: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {};
   },
-  computed: {
-    getUser() {
-      return this.$store.getters['userStore/getUser'];
-    },
-    getProfilePhoto() {
-      return this.$store.getters['userStore/getProfilePhoto'];
-    },
-  },
+  computed: {},
   methods: {
     updateProfilePhoto(event) {
       const files = event.currentTarget.files;
