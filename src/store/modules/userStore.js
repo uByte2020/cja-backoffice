@@ -27,12 +27,19 @@ const userStore = {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
             context.commit('setResponse', { status: response.data.status }, { root: true });
-            resolve(response.data);
+            try {
+              resolve(response.data);
+            } catch (err) {
+              reject(err);
+            }
           })
           .catch((error) => {
-            const err = error.response.data;
-            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
-            reject(err);
+            try {
+              const err = error.response.data;
+              reject(err);
+            } catch (err) {
+              reject(error);
+            }
           });
       });
     },
@@ -79,14 +86,19 @@ const userStore = {
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
-            context.commit('setResponse', { status: response.data.status }, { root: true });
-            resolve(response.data);
+            try {
+              resolve(response.data);
+            } catch (err) {
+              reject(err);
+            }
           })
           .catch((error) => {
-            console.log(error);
-            const err = error.response.data;
-            context.commit('setResponse', { status: err.status, message: err.message }, { root: true });
-            reject(err);
+            try {
+              const err = error.response.data;
+              reject(err);
+            } catch (err) {
+              reject(error);
+            }
           });
       });
     },
