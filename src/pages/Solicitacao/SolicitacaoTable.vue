@@ -17,17 +17,16 @@
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Seguro">{{ item.seguro.modalidade.modalidade }}</md-table-cell>
-        <md-table-cell md-label="Seguradora">{{ item.seguro.seguradora.seguradora }}</md-table-cell>
+        <md-table-cell md-label="Seguradora">{{ getSeguradora(item.seguro.seguradora) }}</md-table-cell>
         <md-table-cell md-label="Cliente">{{ item.cliente.name }}</md-table-cell>
         <md-table-cell md-label="Tipo">{{ item.cliente.role.perfil }}</md-table-cell>
         <md-table-cell md-label="Preço">{{ item.price }}</md-table-cell>
         <md-table-cell md-label="Data Solicitada">{{ getData(item.seguro.createdAt) }}</md-table-cell>
         <md-table-cell md-label="Caducidade">{{ getData(item.validAt) }}</md-table-cell>
         <!-- <md-table-cell md-label="Docs">Ver Docs</md-table-cell> -->
-        <md-table-cell
-          md-label="Estado"
-          :class="getTextClassColor(item.estado.estadoCode)"
-        >{{ item.estado.estado }}</md-table-cell>
+        <md-table-cell md-label="Estado" :class="getTextClassColor(item.estado.estadoCode)">{{
+          item.estado.estado
+        }}</md-table-cell>
         <md-table-cell md-label="Detalhes">
           <md-button @click="callSeguroDetalhe(item)" class="md-just-icon md-simple md-success">
             <md-icon>visibility</md-icon>
@@ -102,6 +101,9 @@ export default {
       this.page = page;
       const skip = (page - 1) * this.limit;
       this.searched = this.solicitacoes.slice(skip, skip + this.limit);
+    },
+    getSeguradora(seguradora) {
+      return seguradora ? seguradora.seguradora : '-';
     },
     getData(date) {
       const formatDate = new Date(date);

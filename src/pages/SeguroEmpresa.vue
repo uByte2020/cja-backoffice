@@ -10,45 +10,22 @@
 
           <md-card-content>
             <div class="md-layout">
-              <div class="md-layout-item md-small-size-100 md-size-50">
+              <!-- <div class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label for="seguradora">Seguradoras*</label>
-                  <md-select
-                    v-model="seguradoraId"
-                    @md-selected="setSeguradora()"
-                    name="seguradora"
-                    id="seguradora"
-                  >
-                    <md-option
-                      v-for="seguradora in getSeguradoras"
-                      :key="seguradora._id"
-                      :value="seguradora._id"
-                    >
-                      {{
-                      seguradora.seguradora
-                      }}
+                  <md-select v-model="seguradoraId" @md-selected="setSeguradora()" name="seguradora" id="seguradora">
+                    <md-option v-for="seguradora in getSeguradoras" :key="seguradora._id" :value="seguradora._id">
+                      {{ seguradora.seguradora }}
                     </md-option>
                   </md-select>
                 </md-field>
-              </div>
+              </div> -->
               <div class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label for="modalidade">Modalidades*</label>
-                  <md-select
-                    v-model="modalidadeId"
-                    @md-selected="setModalidade()"
-                    name="modalidade"
-                    id="modalidade"
-                    :disabled="isModalidadeAvailable"
-                  >
-                    <md-option
-                      v-for="modalidade in modalidades"
-                      :key="modalidade._id"
-                      :value="modalidade._id"
-                    >
-                      {{
-                      modalidade.modalidade
-                      }}
+                  <md-select v-model="modalidadeId" @md-selected="setModalidade()" name="modalidade" id="modalidade">
+                    <md-option v-for="modalidade in getModalidades" :key="modalidade._id" :value="modalidade._id">
+                      {{ modalidade.modalidade }}
                     </md-option>
                   </md-select>
                 </md-field>
@@ -65,7 +42,7 @@
                   />
                 </md-field>
               </div>
-              <div class="md-layout-item md-small-size-100 md-size-50">
+              <!-- <div class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label for="comprovativos">Anexar Comprovativos</label>
                   <md-file
@@ -76,7 +53,7 @@
                     multiple
                   />
                 </md-field>
-              </div>
+              </div> -->
               <md-button class="md-raised md-success" @click="solicitarSeguro()">Continue</md-button>
             </div>
           </md-card-content>
@@ -114,7 +91,7 @@ export default {
       if (this.modalidades.length > 0) this.isModalidadeAvailable = false;
     },
     setModalidade() {
-      this.seguro.modalidade = this.modalidades.find((mod) => mod._id === this.modalidadeId);
+      this.seguro.modalidade = this.getModalidades.find((mod) => mod._id === this.modalidadeId);
     },
     setComprovativos() {
       this.seguro.comprovativos = this.comprovativos.target.files;
@@ -144,7 +121,7 @@ export default {
 
       seguro.append('tipo', this.getUser.role.perfil);
       seguro.append('modalidade', this.seguro.modalidade._id);
-      seguro.append('seguradora', this.seguro.seguradora._id);
+      // seguro.append('seguradora', this.seguro.seguradora._id);
 
       try {
         const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
@@ -192,7 +169,7 @@ export default {
   },
   computed: {
     getModalidades() {
-      return this.modalidades;
+      return this.$store.getters.getModalidades; //this.modalidades;
     },
     getSeguradoras() {
       return this.$store.getters.getSeguradoras.filter((seg) => seg.isActive);
