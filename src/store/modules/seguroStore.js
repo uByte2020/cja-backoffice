@@ -1,3 +1,4 @@
+import API_URL from './../../utils/apiURL';
 const userStore = {
   namespaced: true,
   state: () => ({
@@ -12,7 +13,7 @@ const userStore = {
     updateSeguro: async (context, seguro) => {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://127.0.0.1:3000/api/v1/seguros/${seguro.get('_id')}`, seguro)
+          .patch(`${API_URL.BASE_URL}/seguros/${seguro.get('_id')}`, seguro)
           .then((response) => {
             resolve(response.data);
           })
@@ -26,7 +27,7 @@ const userStore = {
     solicitarSeguro: async (context, seguro) => {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3000/api/v1/seguros', seguro)
+          .post(`${API_URL.BASE_URL}/seguros`, seguro)
           .then((response) => {
             resolve(response.data);
           })

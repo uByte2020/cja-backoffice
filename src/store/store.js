@@ -5,6 +5,7 @@ import SolicitacaoStore from './modules/solicitacaoStore';
 import SeguroStore from './modules/seguroStore';
 import SeguroViagemStore from './modules/seguroViagemStore';
 import status from './../utils/statusEnum';
+import API_URL from './../utils/apiURL';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -48,25 +49,25 @@ export default new Vuex.Store({
   },
   actions: {
     getPerfils: async (context) => {
-      const result = await axios.get('http://127.0.0.1:3000/api/v1/perfils');
+      const result = await axios.get(`${API_URL.BASE_URL}/perfils`);
       if (result.data.status === status.SUCCESS) context.commit('setPerfils', result.data.data.docs);
     },
     getSeguradoras: async (context) => {
-      const result = await axios.get('http://127.0.0.1:3000/api/v1/seguradoras');
+      const result = await axios.get(`${API_URL.BASE_URL}/seguradoras`);
       if (result.data.status === status.SUCCESS) context.commit('setSeguradoras', result.data.data.docs);
     },
     getModalidades: async (context) => {
-      const result = await axios.get('http://127.0.0.1:3000/api/v1/modalidades');
+      const result = await axios.get(`${API_URL.BASE_URL}/modalidades`);
       if (result.data.status === status.SUCCESS) context.commit('setModalidades', result.data.data.docs);
     },
     getPlanos: async (context) => {
-      const result = await axios.get('http://127.0.0.1:3000/api/v1/seguros/viagens/planos');
+      const result = await axios.get(`${API_URL.BASE_URL}/seguros/viagens/planos`);
       if (result.data.status === status.SUCCESS) context.commit('setPlanos', result.data.data.docs);
     },
     solicitar: async (context, solicitacao) => {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3000/api/v1/solicitacoes', solicitacao)
+          .post(`${API_URL.BASE_URL}/solicitacoes`, solicitacao)
           .then((response) => {
             resolve(response.data);
           })
@@ -80,7 +81,7 @@ export default new Vuex.Store({
     updateSolicitacao: async (context, { _id, estado }) => {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://127.0.0.1:3000/api/v1/solicitacoes/${_id}`, { estado: estado })
+          .patch(`${API_URL.BASE_URL}/solicitacoes/${_id}`, { estado: estado })
           .then((response) => {
             resolve(response.data);
           })

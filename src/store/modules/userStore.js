@@ -1,4 +1,5 @@
 import status from './../../utils/statusEnum';
+import API_URL from './../../utils/apiURL';
 
 const userStore = {
   namespaced: true,
@@ -22,7 +23,7 @@ const userStore = {
     login: (context, credencial) => {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3000/api/v1/users/login', credencial)
+          .post(`${API_URL.BASE_URL}/users/login`, credencial)
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
@@ -46,7 +47,7 @@ const userStore = {
     logout: (context) => {
       return new Promise((resolve, reject) => {
         axios
-          .get('http://127.0.0.1:3000/api/v1/users/logout')
+          .get(`${API_URL.BASE_URL}/users/logout`)
           .then((response) => {
             context.commit('setUser', null);
             context.commit('setUsers', []);
@@ -65,7 +66,7 @@ const userStore = {
     signup: (context, user) => {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3000/api/v1/users/signup', user)
+          .post(`${API_URL.BASE_URL}/users/signup`, user)
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
@@ -82,7 +83,7 @@ const userStore = {
     isLogged: (context) => {
       return new Promise((resolve, reject) => {
         axios
-          .get('http://127.0.0.1:3000/api/v1/users/isLogged')
+          .get(`${API_URL.BASE_URL}/users/isLogged`)
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
@@ -106,7 +107,7 @@ const userStore = {
       if (context.state.user.role.perfilCode <= 1)
         return new Promise((resolve, reject) => {
           axios
-            .get('http://127.0.0.1:3000/api/v1/users')
+            .get(`${API_URL.BASE_URL}/users`)
             .then((response) => {
               context.commit('setUsers', response.data.data.docs);
               context.commit('setResponse', { status: response.data.status }, { root: true });
@@ -123,7 +124,7 @@ const userStore = {
       console.log(user);
       return new Promise((resolve, reject) => {
         axios
-          .patch('http://127.0.0.1:3000/api/v1/users/updateMe', user)
+          .patch(`${API_URL.BASE_URL}/users/updateMe`, user)
           .then((response) => {
             context.commit('setUser', response.data.data.user);
             context.commit('setIsAuth', true);
@@ -140,7 +141,7 @@ const userStore = {
     updateUser: (context, user) => {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://127.0.0.1:3000/api/v1/users/${user._id}`, user)
+          .patch(`${API_URL.BASE_URL}/users/${user._id}`, user)
           .then((response) => {
             context.commit('setResponse', { status: response.data.status }, { root: true });
             resolve(response.data);
@@ -157,7 +158,7 @@ const userStore = {
       if (context.state.user.role.perfilCode <= 1)
         return new Promise((resolve, reject) => {
           axios
-            .get(`http://127.0.0.1:3000/api/v1/users/${userId}`)
+            .get(`${API_URL.BASE_URL}/users/${userId}`)
             .then((response) => {
               resolve(response.data);
             })
@@ -173,10 +174,10 @@ const userStore = {
       return state.user;
     },
     getProfilePhoto: (state) => {
-      return `http://localhost:3000/img/users/${state.user.photo}`;
+      return `${API_URL.DOMAIN}/img/users/${state.user.photo}`;
     },
     getUserImgUrl: (state) => {
-      return `http://localhost:3000/img/users/`;
+      return `${API_URL.DOMAIN}/img/users/`;
     },
     getIsAuth: (state) => {
       return state.isAuth;
