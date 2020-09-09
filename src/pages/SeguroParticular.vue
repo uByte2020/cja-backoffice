@@ -148,12 +148,12 @@ export default {
     },
     async solicitarSeguroViagem(seguroId) {
       try {
-        console.log(seguroId);
+        // console.log(seguroId);
         this.seguroViagem.seguro = seguroId;
         const viagemResponse = await this.$store.dispatch('seguroViagemStore/solicitarSeguroViagem', this.seguroViagem);
-        console.log(viagemResponse);
+        // console.log(viagemResponse);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         this.notifyVue(status.DANGER, err.message);
       }
     },

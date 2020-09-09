@@ -9,4 +9,7 @@ module.exports = {
   bracketSpacing: true,
   jsxBracketSameLine: false,
   arrowParens: 'always',
+  rules: {
+    'no-console': 'off',
+  },
 };

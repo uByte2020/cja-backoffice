@@ -56,7 +56,7 @@ export default {
       try {
         let response = await this.$store.dispatch('userStore/logout');
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
       this.$router.push({ path: '/login' });
     },
