@@ -122,7 +122,6 @@ const userStore = {
         });
     },
     updateMe: (context, user) => {
-      console.log(user);
       return new Promise((resolve, reject) => {
         axios
           .patch(`${API_URL.BASE_URL}/users/updateMe`, user)
@@ -175,7 +174,7 @@ const userStore = {
       return state.user;
     },
     getProfilePhoto: (state) => {
-      const photo = (state.user && state.user.photo) ?
+      const photo = state.user && state.user.photo ?
       state.user.photo : constantes.K_USER_PHOTO;
       return `${API_URL.DOMAIN}/img/users/${photo}`;
     },
