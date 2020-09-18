@@ -33,7 +33,7 @@ export default {
         color: '#4caf50',
         opacity: 0.3,
       });
-      try {
+      try { 
         let response = await this.$store.dispatch('userStore/updateMe', user);
         loader.hide();
       } catch (err) {

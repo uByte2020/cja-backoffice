@@ -60,7 +60,9 @@ const userStore = {
   },
   getters: {
     getSolicitacoes: (state) => {
-      const solicitacoes = [...state.solicitacoes.filter((el) => [1, 2, 3].includes(el.estado.estadoCode))];
+      const solicitacoes = [...state.solicitacoes.filter((el) =>
+          el.cliente && el.estado && el.seguro && [1, 2, 3].includes(el.estado.estadoCode)
+         )];
       return solicitacoes.sort(function(a, b) {
         if (a.estado.estadoCode === 2) {
           return -1;

@@ -312,6 +312,7 @@ export default {
       try {
         const response = await this.$store.dispatch('solicitacaoStore/getSolicitacoesById', this.solicitacaoId);
         this.solicitacao = response.data.doc;
+        this.solicitacao.seguro.seguradora = this.solicitacao.seguro.seguradora || {seguradora: ''}
       } catch (err) {
         this.notifyVue(status.DANGER, err.message);
       }

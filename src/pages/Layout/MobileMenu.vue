@@ -1,8 +1,7 @@
 <template>
   <ul class="nav nav-mobile-menu">
     <li>
-      <a @click="logout()" href="#/logout"
-        ><i class="material-icons">person</i>
+      <a @click="logout()"><i class="material-icons">person</i> 
         <p>Sair</p></a
       >
     </li>

@@ -187,6 +187,7 @@ export default {
         this.sending = false;
         this.notifyVue(status.DANGER, err.message);
       }
+      const isAuth = this.$store.getters['userStore/getIsAuth'];
       if (isAuth) this.$router.push({ path: '/' });
     },
     validateUser() {
@@ -208,7 +209,7 @@ export default {
   },
   computed: {
     perfils() {
-      return this.$store.getters.getPerfils;
+      return this.$store.getters.getPerfils.filter(el=>el.perfilCode!=1);
     },
   },
 };

@@ -1,5 +1,6 @@
 import status from './../../utils/statusEnum';
 import API_URL from './../../utils/apiURL';
+import constantes from './../../utils/constantes';
 
 const userStore = {
   namespaced: true,
@@ -174,7 +175,9 @@ const userStore = {
       return state.user;
     },
     getProfilePhoto: (state) => {
-      return `${API_URL.DOMAIN}/img/users/${state.user.photo}`;
+      const photo = (state.user && state.user.photo) ?
+      state.user.photo : constantes.K_USER_PHOTO;
+      return `${API_URL.DOMAIN}/img/users/${photo}`;
     },
     getUserImgUrl: (state) => {
       return `${API_URL.DOMAIN}/img/users/`;
@@ -198,7 +201,7 @@ const userStore = {
       return state.user.role.perfilCode;
     },
     restrictTo: (state) => (...role) => {
-      return role.includes(state.user.role.perfilCode);
+      return state.user && state.user.role && role.includes(state.user.role.perfilCode);
     },
   },
 };

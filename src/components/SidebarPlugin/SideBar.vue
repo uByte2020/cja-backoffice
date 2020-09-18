@@ -82,6 +82,8 @@ export default {
       return this.$store.getters['userStore/getUser'];
     },
     getUserName() {
+      if(!this.getUser) return  '';
+      if(!this.getUser.name) return  '';
       const name = this.getUser.name.split(' ');
       return `${name[0]} ${name[name.length - 1]}`;
     },
