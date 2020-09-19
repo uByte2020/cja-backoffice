@@ -179,16 +179,30 @@ export default {
     async saveUser() {
       this.sending = true;
       try {
+        if(this.form.role===1) this.form.isBloqued = true;
         let response = await this.$store.dispatch('userStore/signup', this.form);
         this.userSaved = true;
         this.sending = false;
         this.clearForm();
+        this.notifyVue(status.SUCCESS, "Utilizador Registrado com Sucesso!");
       } catch (err) {
         this.sending = false;
         this.notifyVue(status.DANGER, err.message);
       }
       const isAuth = this.$store.getters['userStore/getIsAuth'];
-      if (isAuth) this.$router.push({ path: '/' });
+      const perfilCode = this.$store.getters['userStore/getUserAuthPerfilCode'];
+      if (isAuth) {
+        if(perfilCode ===1){
+          try {
+            let response = await this.$store.dispatch('userStore/logout');
+          } catch (err) {
+            // console.log(err);
+          }
+          this.$router.push({ path: '/login' });
+        }else{
+          this.$router.push({ path: '/' });
+        }
+      }
     },
     validateUser() {
       this.$v.$touch();
