@@ -29,8 +29,8 @@ const router = new VueRouter({
 });
 
 Vue.prototype.$Chartist = Chartist;
-
-// axios.defaults.withCredentials = true;
+//Em teste
+axios.defaults.withCredentials = true;
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
