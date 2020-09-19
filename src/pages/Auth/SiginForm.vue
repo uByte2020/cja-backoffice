@@ -209,7 +209,7 @@ export default {
   },
   computed: {
     perfils() {
-      return this.$store.getters.getPerfils.filter(el=>el.perfilCode!=1);
+      return this.$store.getters.getPerfils;
     },
   },
 };
