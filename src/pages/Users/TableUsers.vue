@@ -85,7 +85,7 @@ export default {
       this.searched = searchByName(this.users, this.search);
     },
     changeBloqState(item) {
-      console.log(item);
+      // console.log(item);
       // this.$store.dispatch('userStore/changeBloqState', item);
     },
     fecthUsers() {
