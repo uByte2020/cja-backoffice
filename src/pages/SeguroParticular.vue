@@ -32,12 +32,7 @@
                       ></seguradora-modalidade>
                     </md-step>
 
-                    <md-step
-                      id="second"
-                      md-label="Simulação"
-                      :md-error="secondStepError"
-                      :md-done.sync="second"
-                    >
+                    <md-step id="second" md-label="Simulação" :md-error="secondStepError" :md-done.sync="second">
                       <seguro-viagem
                         :seguradora="seguro.seguradora"
                         :modalidade="seguro.modalidade"
@@ -138,7 +133,7 @@ export default {
         const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
         await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
         await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
-        this.fetchSolicitacoes();
+        await this.fetchSolicitacoes();
         loader.hide();
         this.$router.push('solicitacoes');
       } catch (err) {

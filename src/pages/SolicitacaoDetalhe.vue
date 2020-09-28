@@ -11,9 +11,7 @@
         <md-card>
           <md-card-header data-background-color="green">
             <h4 class="title">Detalhes da Solicitação</h4>
-            <p
-              class="category"
-            >{{ solicitacao.cliente.role.perfil }} - {{ solicitacao.estado.estado }}</p>
+            <p class="category">{{ solicitacao.cliente.role.perfil }} - {{ solicitacao.estado.estado }}</p>
           </md-card-header>
           <md-card-content>
             <div class="md-layout">
@@ -62,13 +60,7 @@
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field>
                   <label for="preco">Preço (AKZ)</label>
-                  <md-input
-                    v-model="solicitacao.seguro.price"
-                    type="text"
-                    id="preco"
-                    name="preco"
-                    disabled
-                  />
+                  <md-input v-model="solicitacao.seguro.price" type="text" id="preco" name="preco" disabled />
                 </md-field>
               </div>
             </div>
@@ -86,6 +78,7 @@
                     name="docsIdentificacao"
                     id="docsIdentificacao"
                     multiple
+                    :disabled="restrictTo(0, 1)"
                   />
                 </md-field>
 
@@ -99,7 +92,8 @@
                       getFileURL(docsType.DOCIDENTICICACAO),
                     )
                   "
-                >Ver Docs de Identificação</md-button>
+                  >Ver Docs de Identificação</md-button
+                >
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field v-show="!hasFiles(solicitacao.seguro.comprovativos)">
@@ -110,6 +104,7 @@
                     name="comprovativo"
                     id="comprovativo"
                     multiple
+                    :disabled="!restrictTo(2, 3)"
                   />
                 </md-field>
 
@@ -119,35 +114,26 @@
                   @click="
                     callDialog(solicitacao.seguro.comprovativos, 'Comprovativos', getFileURL(docsType.COMPROVATIVO))
                   "
-                >Ver Comprovativos</md-button>
+                  >Ver Comprovativos</md-button
+                >
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field v-show="!solicitacao.seguro.apolice && restrictTo(0, 1)">
                   <label for="apolice">Anexar Apólice</label>
-                  <md-file
-                    v-model="apolice"
-                    @change="setApolice"
-                    name="apolice"
-                    id="apolice"
-                    multiple
-                  />
+                  <md-file v-model="apolice" @change="setApolice" name="apolice" id="apolice" multiple />
                 </md-field>
 
                 <md-button
                   v-show="solicitacao.seguro.apolice"
                   class="md-raised md-success"
                   @click="callDialog(solicitacao.seguro.apolice, 'Apólice de Seguro', getFileURL(docsType.APOLICE))"
-                >Ver Aplice de Seguro</md-button>
+                  >Ver Aplice de Seguro</md-button
+                >
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field v-show="!solicitacao.seguro.simulacao && restrictTo(0, 1)">
                   <label for="simulacao">Anexar Simulacao</label>
-                  <md-file
-                    v-model="simulacao"
-                    @change="setSimulacao"
-                    name="simulacao"
-                    id="simulacao"
-                  />
+                  <md-file v-model="simulacao" @change="setSimulacao" name="simulacao" id="simulacao" />
                 </md-field>
 
                 <md-button
@@ -156,11 +142,12 @@
                   @click="
                     callDialog(solicitacao.seguro.simulacao, 'Simulação de Seguro', getFileURL(docsType.SIMULACAO))
                   "
-                >Ver Simulacao de Seguro</md-button>
+                  >Ver Simulacao de Seguro</md-button
+                >
               </div>
             </div>
             <div class="md-layout-item md-size-100 text-right">
-              <md-button class="md-raised md-success" @click="update">Actualizar</md-button>
+              <md-button class="md-raised md-success" @click="update">{{ getBtnValidateText }}</md-button>
             </div>
           </md-card-content>
         </md-card>
@@ -293,7 +280,7 @@ export default {
       try {
         const seguroResponse = await this.$store.dispatch('seguroStore/updateSeguro', seguro);
         if (seguroResponse.data.doc.apolice) await this.updateSolicitacao({ _id: this.solicitacao._id, estado: 1 });
-        this.fetchSolicitacoes();
+        await this.fetchSolicitacoes();
         loader.hide();
         this.$router.push('/solicitacoes');
       } catch (err) {
@@ -312,7 +299,7 @@ export default {
       try {
         const response = await this.$store.dispatch('solicitacaoStore/getSolicitacoesById', this.solicitacaoId);
         this.solicitacao = response.data.doc;
-        this.solicitacao.seguro.seguradora = this.solicitacao.seguro.seguradora || {seguradora: ''}
+        this.solicitacao.seguro.seguradora = this.solicitacao.seguro.seguradora || { seguradora: '' };
       } catch (err) {
         this.notifyVue(status.DANGER, err.message);
       }
@@ -338,6 +325,9 @@ export default {
     },
   },
   computed: {
+    getBtnValidateText() {
+      return this.restrictTo(0, 1) ? 'Enviar' : 'Actualizar';
+    },
     getSolicitacao() {
       return this.$store.getters['userStore/getUsers'];
     },

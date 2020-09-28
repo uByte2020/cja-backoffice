@@ -20,7 +20,7 @@
         <md-table-cell md-label="Seguradora">{{ getSeguradora(item.seguro.seguradora) }}</md-table-cell>
         <md-table-cell md-label="Cliente">{{ item.cliente.name }}</md-table-cell>
         <md-table-cell md-label="Tipo">{{ item.cliente.role.perfil }}</md-table-cell>
-        <md-table-cell md-label="Preço">{{ item.price }}</md-table-cell>
+        <md-table-cell md-label="Preço (AKZ)">{{ item.seguro.price }}</md-table-cell>
         <md-table-cell md-label="Data Solicitada">{{ getData(item.seguro.createdAt) }}</md-table-cell>
         <md-table-cell md-label="Caducidade">{{ getData(item.validAt) }}</md-table-cell>
         <!-- <md-table-cell md-label="Docs">Ver Docs</md-table-cell> -->
