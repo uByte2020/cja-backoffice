@@ -4,7 +4,7 @@
       <md-table-toolbar>
         <div class="md-toolbar-section-start"></div>
         <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Pesquisar por Seguro..." v-model="search" @input="searchOnTable" />
+          <md-input placeholder="Pesquisar por Seguros..." v-model="search" @input="searchOnTable" />
         </md-field>
       </md-table-toolbar>
 
@@ -20,7 +20,7 @@
         <md-table-cell md-label="Seguradora">{{ item.seguro.seguradora.seguradora }}</md-table-cell>
         <md-table-cell md-label="Cliente">{{ item.cliente.name }}</md-table-cell>
         <md-table-cell md-label="Tipo">{{ item.cliente.role.perfil }}</md-table-cell>
-        <md-table-cell md-label="Preço">{{ item.price }}</md-table-cell>
+        <md-table-cell md-label="Prêmio">{{ item.price }}</md-table-cell>
         <md-table-cell md-label="Data Solicitada">{{ getData(item.seguro.createdAt) }}</md-table-cell>
         <md-table-cell md-label="Caducidade">{{ getData(item.validAt) }}</md-table-cell>
         <md-table-cell md-label="Docs">Ver Docs</md-table-cell>

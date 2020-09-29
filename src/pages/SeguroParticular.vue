@@ -87,7 +87,7 @@ export default {
   methods: {
     showModal({ id, index, seguroViagem, documentos }) {
       this.seguroViagem = seguroViagem;
-      this.seguro.docIdentificacaos = documentos;
+      this.setDocIdentificacaos(documentos);
       this.lastId = id;
       this.lastIndex = index;
       this.showDialog = true;
@@ -139,15 +139,23 @@ export default {
       seguro.append('modalidade', this.seguro.modalidade._id);
       seguro.append('seguradora', this.seguro.seguradora._id);
       seguro.append('price', this.seguro.price);
+
       if (this.seguro.comprovativos !== null) seguro.append('comprovativos', this.seguro.comprovativos);
       if (this.seguro.docIdentificacaos) seguro.append('docIdentificacaos', this.seguro.docIdentificacaos);
 
       try {
+        let validAt = null;
         const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
-        if (this.seguro.modalidade.modalidade === modalidades.VIAGEM)
+        if (this.seguro.modalidade.modalidade === this.modalidades.VIAGEM) {
+          validAt = this.seguroViagem.dataVolta;
           await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
+        }
 
-        await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
+        await this.solicitar({
+          seguro: seguroResponse.data.doc._id,
+          cliente: this.getUser._id,
+          validAt: validAt,
+        });
         await this.fetchSolicitacoes();
         loader.hide();
         this.$router.push('solicitacoes');
@@ -158,12 +166,9 @@ export default {
     },
     async solicitarSeguroViagem(seguroId) {
       try {
-        // console.log(seguroId);
         this.seguroViagem.seguro = seguroId;
         const viagemResponse = await this.$store.dispatch('seguroViagemStore/solicitarSeguroViagem', this.seguroViagem);
-        // console.log(viagemResponse);
       } catch (err) {
-        // console.log(err);
         this.notifyVue(status.DANGER, err.message);
       }
     },

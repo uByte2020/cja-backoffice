@@ -29,7 +29,7 @@
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field>
-                  <label for="mediador">Mediador</label>
+                  <label for="mediador">Gestor de Cliente</label>
                   <md-input type="text" id="mediador" name="mediador" disabled />
                 </md-field>
               </div>
@@ -59,7 +59,7 @@
               </div>
               <div class="md-layout-item md-small-size-100 md-size-33">
                 <md-field>
-                  <label for="preco">Preço (AKZ)</label>
+                  <label for="preco">Prêmio (AKZ)</label>
                   <md-input v-model="solicitacao.seguro.price" type="text" id="preco" name="preco" disabled />
                 </md-field>
               </div>

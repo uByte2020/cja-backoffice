@@ -35,7 +35,7 @@ export default {
   }),
   methods: {
     setDocIdentificacaos() {
-      this.docIdentificacaos = this.docIdentificacaosTemp.target.files;
+      this.docIdentificacaos = this.docIdentificacaosTemp.target.files[0];
       this.sending = false;
     },
     next() {

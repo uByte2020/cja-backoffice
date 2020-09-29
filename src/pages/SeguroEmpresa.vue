@@ -4,7 +4,7 @@
       <div class="md-layout-item">
         <md-card>
           <md-card-header data-background-color="green">
-            <h4 class="title">Solicitação de Seguro Empresarial</h4>
+            <h4 class="title">Solicitação de Seguros Empresarial</h4>
             <p class="category"></p>
           </md-card-header>
 
