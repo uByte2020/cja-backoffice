@@ -65,6 +65,7 @@
               </div>
             </div>
             <SolicitacaoViagemDetalhe
+              v-if="solicitacao.seguro.modalidade.modalidade === modalidades.VIAGEM"
               v-show="hasPermission(solicitacao.cliente.role.perfilCode, 0, 1, 2)"
               :seguro-viagem="solicitacao.seguro.seguroViagem"
             ></SolicitacaoViagemDetalhe>
@@ -159,7 +160,7 @@
 <script>
 import { SolicitacaoViagemDetalhe, SolicitacaoDetalheFiles } from '@/pages';
 import DocsType from './../utils/docsType';
-
+import utilModalidades from './../utils/modalidades';
 export default {
   name: 'simulacao-detalhe',
   components: { SolicitacaoViagemDetalhe, SolicitacaoDetalheFiles },
@@ -212,6 +213,7 @@ export default {
       nameFile: '',
       showDialog: false,
       docsType: DocsType,
+      modalidades: utilModalidades,
     };
   },
   mounted() {

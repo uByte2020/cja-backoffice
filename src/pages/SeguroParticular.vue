@@ -34,11 +34,14 @@
 
                     <md-step id="second" md-label="Simulação" :md-error="secondStepError" :md-done.sync="second">
                       <seguro-viagem
+                        v-show="seguro.modalidade.isAutomatic"
                         :seguradora="seguro.seguradora"
                         :modalidade="seguro.modalidade"
                         @error="setError()"
                         @is-valid="showModal"
                       ></seguro-viagem>
+
+                      <SerguroGeral v-show="!seguro.modalidade.isAutomatic" @is-valid="getResultFromComponent" />
                     </md-step>
 
                     <md-step id="third" md-label="Resultado" :md-done.sync="third">
@@ -57,10 +60,10 @@
 </template>
 
 <script>
-import { SeguroViagem, SeguradoraModalidade, SimulacaoResult, SeguroViagemPreco } from '@/pages';
-
+import { SeguroViagem, SeguradoraModalidade, SimulacaoResult, SeguroViagemPreco, SerguroGeral } from '@/pages';
+import utilModalidades from './../utils/modalidades';
 export default {
-  components: { SeguroViagem, SeguradoraModalidade, SimulacaoResult, SeguroViagemPreco },
+  components: { SeguroViagem, SeguradoraModalidade, SimulacaoResult, SeguroViagemPreco, SerguroGeral },
   data: () => ({
     showDialog: false,
     active: 'first',
@@ -79,6 +82,7 @@ export default {
     lastId: null,
     lastIndex: null,
     seguroViagem: {},
+    modalidades: utilModalidades,
   }),
   methods: {
     showModal({ id, index, seguroViagem, documentos }) {
@@ -93,6 +97,14 @@ export default {
       this.seguro.price = preco;
       this.setDone({ id: this.lastId, index: this.lastIndex });
     },
+    getResultFromComponent({ id, index, documentos }) {
+      this.seguro.price = 0.0;
+      this.setDocIdentificacaos(documentos);
+      this.setDone({ id, index });
+    },
+    setDocIdentificacaos(docIdentificacaos) {
+      this.seguro.docIdentificacaos = docIdentificacaos;
+    },
     setDone({ id, index }) {
       this[id] = true;
 
@@ -102,6 +114,7 @@ export default {
         this.active = index;
       }
     },
+
     setError({ message }) {
       this.secondStepError = message;
     },
@@ -131,7 +144,9 @@ export default {
 
       try {
         const seguroResponse = await this.$store.dispatch('seguroStore/solicitarSeguro', seguro);
-        await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
+        if (this.seguro.modalidade.modalidade === modalidades.VIAGEM)
+          await this.solicitarSeguroViagem(seguroResponse.data.doc._id);
+
         await this.solicitar({ seguro: seguroResponse.data.doc._id, cliente: this.getUser._id });
         await this.fetchSolicitacoes();
         loader.hide();

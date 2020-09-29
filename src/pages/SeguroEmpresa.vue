@@ -10,16 +10,6 @@
 
           <md-card-content>
             <div class="md-layout">
-              <!-- <div class="md-layout-item md-small-size-100 md-size-50">
-                <md-field>
-                  <label for="seguradora">Seguradoras*</label>
-                  <md-select v-model="seguradoraId" @md-selected="setSeguradora()" name="seguradora" id="seguradora">
-                    <md-option v-for="seguradora in getSeguradoras" :key="seguradora._id" :value="seguradora._id">
-                      {{ seguradora.seguradora }}
-                    </md-option>
-                  </md-select>
-                </md-field>
-              </div> -->
               <div class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label for="modalidade">Modalidades*</label>
@@ -42,18 +32,6 @@
                   />
                 </md-field>
               </div>
-              <!-- <div class="md-layout-item md-small-size-100 md-size-50">
-                <md-field>
-                  <label for="comprovativos">Anexar Comprovativos</label>
-                  <md-file
-                    name="comprovativos"
-                    id="comprovativos"
-                    v-model="comprovativos"
-                    @change="setComprovativos"
-                    multiple
-                  />
-                </md-field>
-              </div> -->
               <md-button class="md-raised md-success" @click="solicitarSeguro()">Continue</md-button>
             </div>
           </md-card-content>
