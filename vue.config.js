@@ -15,6 +15,6 @@ module.exports = {
       },
     },
   },
-  outputDir: path.resolve(__dirname, '../dest'),
+  //outputDir: path.resolve(__dirname, '../dest'),
   publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 };

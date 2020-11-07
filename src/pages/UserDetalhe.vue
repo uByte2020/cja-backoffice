@@ -63,7 +63,7 @@ export default {
         color: '#4caf50',
         opacity: 0.3,
       });
-      console.log(user);
+      //console.log(user);
       try {
         let response = await this.$store.dispatch('userStore/updateUser', user);
         await this.fetchUsers();
